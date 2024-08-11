@@ -71,10 +71,14 @@ public class BillController {
 
     private static void viewOverdueBills() {
         // Logic for viewing overdue bills
+    	  System.out.println("\nView Overdue Bills:");
+          List<Bill> overdueBills = billManager.getOverdueBills();
+          displayBills(overdueBills);
     }
 
     private static void viewUpcomingBills() {
         // Logic for viewing upcoming bills
+    	
     }
 
     private static void snoozeBill() {
@@ -82,6 +86,31 @@ public class BillController {
     }
 
     private static void markBillAsPaid() {
+    	System.out.println("\nMark Bill as Paid:");
+        System.out.print("Enter Bill ID: ");
+        int billId = scanner.nextInt();
+        scanner.nextLine();
+        
+
         // Logic for marking a bill as paid
+    }
+    private static void displayBills(List<Bill> bills) {
+        if (bills.isEmpty()) {
+            System.out.println("No bills found.");
+        } else {
+            System.out.println("\nBill Details:");
+            for (Bill bill : bills) {
+                System.out.println("Bill ID: " + bill.getBillId());
+                System.out.println("Bill Name: " + bill.getBillName());
+                System.out.println("Category: " + bill.getBillCategory());
+                System.out.println("Due Date: " + dateFormat.format(bill.getDueDate()));
+                System.out.println("Amount: " + bill.getAmount());
+                System.out.println("Reminder Frequency: " + bill.getReminderFrequency());
+               System.out.println("Is Recurring: " + bill.isRecurring());
+                System.out.println("Payment Status: " + bill.getPaymentStatus());
+                System.out.println("Overdue Days: " + bill.getOverdueDays());
+                System.out.println("-------------");
+            }
+        }
     }
 }
