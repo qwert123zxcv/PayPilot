@@ -9,9 +9,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class BillController {
-    private static Scanner scanner = new Scanner(System.in);
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-    private static BillManager billManager;
 
     public static void main(String[] args) {
         System.out.print("Enter User ID: ");
