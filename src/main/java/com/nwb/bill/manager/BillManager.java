@@ -45,7 +45,7 @@ public class BillManager {
 		Date todays_date=new Date();
 
 		System.out.println("Enter amount");
-		double amount=s.nextDouble();
+		double amount=Double.parseDouble(s.nextLine().trim());
 		System.out.println("Enter reminder frequency(weekly/monthly/yearly)");
 		String reminder_frequency=s.nextLine();
 		System.out.println("Upload attachment");
@@ -54,7 +54,7 @@ public class BillManager {
 			System.out.println("Invalid file path");
 		}
 		System.out.println("Do you want to add any notes?(y/n)");
-		char notes_response=s.next().charAt(0);
+		char notes_response=s.nextLine().charAt(0);
 		notes_response=Character.toLowerCase(notes_response);
 		String notes="";
 		if(notes_response=='y') {
@@ -62,10 +62,10 @@ public class BillManager {
 			notes=s.nextLine();
 		}
 		System.out.println("Do you want to toggle recurring bill(y/n)");
-		char rec_bill=s.next().charAt(0);
+		char rec_bill=s.nextLine().charAt(0);
 		rec_bill=Character.toLowerCase(rec_bill);
 		System.out.println("Do you want to save?(y/n)");
-		char save_response=s.next().charAt(0);
+		char save_response=s.nextLine().charAt(0);
 		save_response=Character.toLowerCase(save_response);
 		if(save_response=='y') {
 			Bill newBill=new Bill();
@@ -102,11 +102,11 @@ public class BillManager {
 		List<Bill> overdueBills=new ArrayList<>();
 		System.out.println("Select if you\n1. Want to filter out or\n2. You want "+
 				"to enter the details manually");
-		switch(s.nextInt()) {
+		switch(Integer.parseInt(s.nextLine().trim())) {
 			case 1:
 				System.out.println("Select one of the two options:\n"+
 						"1. By date range\n2. By bill category");
-				switch(s.nextInt()) {
+				switch(Integer.parseInt(s.nextLine().trim())) {
 					case 1:
 						boolean flag=true;
 						Date date_start=null;
@@ -152,7 +152,7 @@ public class BillManager {
 			case 2:
 				System.out.println("Select bill category\n1. House Rent\n2. Debt Payments\n"+
 						"3. Groceries\n4. Internet Charges\n5. Cellphone Charges");
-				int bill_category=s.nextInt();
+				int bill_category=Integer.parseInt(s.nextLine().trim());
 				System.out.println("Enter bill name");
 				String bill_name=s.nextLine();
 				switch(bill_category) {
