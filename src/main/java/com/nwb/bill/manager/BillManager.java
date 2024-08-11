@@ -11,15 +11,26 @@ public class BillManager {
     	this.userId = userId;
         this.bills = new ArrayList<>();
     }
-
+    
     public List<Bill> getBillsOverview(String category, Date fromDate, Date toDate, String status) {
-		//Must add some code here
-    	return bills;
-        
+        List<Bill> filteredBills = new ArrayList<>();
+        for (Bill bill : bills) {
+            boolean matchesCategory = category.equalsIgnoreCase("ALL") || bill.getBillCategory().equalsIgnoreCase(category);
+            boolean matchesFromDate = !bill.getDueDate().before(fromDate);
+            boolean matchesToDate = !bill.getDueDate().after(toDate);
+            boolean matchesStatus = bill.getPaymentStatus().equalsIgnoreCase(status);
+            
+            if (matchesCategory && matchesFromDate && matchesToDate && matchesStatus) {
+                filteredBills.add(bill);
+            }
+        }
+        return filteredBills;
     }
 
+
     public void addNewBill(Bill bill) {
-        //must add some code here
+        
+    	bills.add(bill);
     }
 
     public List<Bill> getOverdueBills() {
@@ -28,4 +39,3 @@ public class BillManager {
         
     }
 }
-
