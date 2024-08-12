@@ -21,16 +21,12 @@ public class BillManager {
         this.userId = userId;
         this.bills = new ArrayList<>();
     }
-
+    
     public List<Bill> getBillsOverview(String category, Date fromDate, Date toDate, String status) {
         List<Bill> filteredBills = new ArrayList<>();
         for (Bill bill : bills) {
-            // Check for null dueDate
-            if (bill.getDueDate() == null) {
-                continue; // Skip this bill if dueDate is null
-            }
 
-            boolean matchesCategory = category.equalsIgnoreCase("ALL") || bill.getBillCategory().equalsIgnoreCase(category);
+            boolean matchesCategory = bill.getBillCategory().equalsIgnoreCase(category);
             boolean matchesFromDate = !bill.getDueDate().before(fromDate);
             boolean matchesToDate = !bill.getDueDate().after(toDate);
             boolean matchesStatus = bill.getPaymentStatus().equalsIgnoreCase(status);
@@ -42,6 +38,8 @@ public class BillManager {
         return filteredBills;
     }
 
+
+    
     public List<Bill> getFilteredBillsOverview() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nView Bills Overview:");
