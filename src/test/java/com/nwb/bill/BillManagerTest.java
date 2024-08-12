@@ -1,8 +1,18 @@
 package com.nwb.bill;
+
 import com.nwb.bill.manager.BillManager;
 import com.nwb.bill.model.Bill;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import org.junit.Test;
 
 public class BillManagerTest {
 
@@ -11,6 +21,7 @@ public class BillManagerTest {
     private Bill bill2;
 
     public BillManagerTest() {
+    	
         // Initialize the BillManager with a sample userId
         billManager = new BillManager("user123");
 
@@ -126,6 +137,38 @@ public class BillManagerTest {
             assertEquals("Overdue Bill", overdueBills.get(0).getBillName(), "The overdue bill should be 'Overdue Bill'.");
         }
     
+      @Test
+      public void testGetBillsOverview_AllBills() {
+         List<Bill> bills = billManager.getBillsOverview(null, null, null, null);
+         assertEquals(2, bills.size());
+      }
 
+      @Test
+      public void testGetBillsOverview_ByCategory() {
+         List<Bill> bills = billManager.getBillsOverview("HOUSE_RENT", null, null, null);
+           assertEquals(1, bills.size());
+           assertEquals("Electricity Bill", bills.get(0).getBillName());
+      }
+
+      @Test
+      public void testGetBillsOverview_ByDateRange() {
+         Date fromDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 15); // 15 days ago
+           Date toDate = new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 15); // 15 days from now
+           List<Bill> bills = billManager.getBillsOverview(null, fromDate, toDate, null);
+           assertEquals(2, bills.size());
+      }
+
+      @Test
+      public void testGetBillsOverview_ByStatus() {
+      List<Bill> bills = billManager.getBillsOverview(null, null, null, "PENDING");
+      assertEquals(1, bills.size());
+      assertEquals("Internet Bill", bills.get(0).getBillName());
+      }
+
+      @Test
+      public void testGetBillsOverview_NoResults() {
+         List<Bill> bills = billManager.getBillsOverview("NON_EXISTENT_CATEGORY", null, null, null);
+           assertTrue(bills.isEmpty());
+      }
 }
 
