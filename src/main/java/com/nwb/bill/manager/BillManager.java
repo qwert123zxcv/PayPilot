@@ -1,9 +1,18 @@
+
 package com.nwb.bill.manager;
 import com.nwb.bill.model.Bill;
 
+
+import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+
 
 public class BillManager {
+	
 	private String userId;
 	private List<Bill> bills;
 	
@@ -11,12 +20,6 @@ public class BillManager {
 	public BillManager(String userId) {
 		this.userId = userId;
 		this.bills = new ArrayList<>();
-	}
-
-	public List<Bill> getBillsOverview(String category, Date fromDate, Date toDate, String status) {
-		//Must add some code here
-		return bills;
-
 	}
 
 	public void addNewBill(Bill bill) {
@@ -77,5 +80,52 @@ public class BillManager {
 		}
 		return overdueBills;
 	}
-}
+    
+    public List<Bill> getBillsOverview(String category, Date fromDate, Date toDate, String status) {
+        List<Bill> filteredBills = new ArrayList<>();
+        for (Bill bill : bills) {
 
+            boolean matchesCategory = bill.getBillCategory().equalsIgnoreCase(category);
+            boolean matchesFromDate = !bill.getDueDate().before(fromDate);
+            boolean matchesToDate = !bill.getDueDate().after(toDate);
+            boolean matchesStatus = bill.getPaymentStatus().equalsIgnoreCase(status);
+
+            if (matchesCategory && matchesFromDate && matchesToDate && matchesStatus) {
+                filteredBills.add(bill);
+            }
+        }
+        return filteredBills;
+    }
+
+    public List<Bill> getFilteredBillsOverview() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\nView Bills Overview:");
+        System.out.print("Bill Category (All, Debt Payments, House Rent, etc.): ");
+        String category = scanner.nextLine();
+
+        System.out.print("Bill Date From (dd-MM-yyyy): ");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date fromDate = null;
+		try {
+            fromDate  = dateFormat.parse(scanner.nextLine());
+        } catch (ParseException e) {
+            System.out.println("Invalid date format. Please try again.");
+            return Collections.emptyList();
+        }
+
+        System.out.print("Bill Date To (dd-MM-yyyy): ");
+        Date toDate = null;
+        try {
+            toDate = dateFormat.parse(scanner.nextLine());
+        } catch (ParseException e) {
+            System.out.println("Invalid date format. Please try again.");
+            return Collections.emptyList();
+        }
+
+        System.out.print("Bill Status (Upcoming/Pending/Paid): ");
+        String status = scanner.nextLine();
+
+        return getBillsOverview(category, fromDate, toDate, status);
+    }
+
+}
