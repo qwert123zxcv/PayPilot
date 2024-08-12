@@ -13,7 +13,7 @@ public class Bill {
     private String billName;                
     private String billCategory;            
     private Date dueDate;                   
-    private double amount;                  
+    private double amount;            
     private String reminderFrequency;       
     private File attachment;                
     private String notes;                   
