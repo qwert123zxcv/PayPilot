@@ -85,7 +85,11 @@ public class BillManager {
         List<Bill> filteredBills = new ArrayList<>();
         for (Bill bill : bills) {
 
-            boolean matchesCategory = bill.getBillCategory().equalsIgnoreCase(category);
+	    boolean matchesCategory = true;
+            if (!category.equalsIgnoreCase("all")) {
+            matchesCategory = bill.getBillCategory().equalsIgnoreCase(category);
+            }
+		
             boolean matchesFromDate = !bill.getDueDate().before(fromDate);
             boolean matchesToDate = !bill.getDueDate().after(toDate);
             boolean matchesStatus = bill.getPaymentStatus().equalsIgnoreCase(status);
