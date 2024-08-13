@@ -141,9 +141,9 @@ public class BillController {
         }
     }
 
-    private static void executeViewOverdueBills() {
+    private static void executeViewOverdueBills(){
         System.out.println("\nView Overdue Bills:");
-        List<Bill> overdueBills = billManager.getOverdueBills(billManager.getBillsOverview("ALL", new Date(Long.MIN_VALUE), new Date(), "pending"));
+        List<Bill> overdueBills = billManager.getOverdueBills();
         displayBills(overdueBills);
     }
 

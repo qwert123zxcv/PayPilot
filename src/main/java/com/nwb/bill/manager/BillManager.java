@@ -26,7 +26,10 @@ public class BillManager {
 		//must add some code here
 		bills.add(bill);
 	}
-	
+	 public List<Bill> getOverdueBills() {
+		return bills;// here i wrote the return bill as to avoid eroor because it is returning bills change accordingly when u write the code
+		 
+	 }
 	//Get all overdue bills
 	public List<Bill> getOverdueBills(List<Bill> bills) {
 		//Must add some code here
