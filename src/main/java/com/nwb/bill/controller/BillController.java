@@ -62,7 +62,7 @@ public class BillController {
             }
         }
     }
-    private static void executeAddNewBill() 
+    private static void executeAddNewBill() // function to execute the new bill
     {
     	Scanner s= new Scanner(System.in); 
 	
