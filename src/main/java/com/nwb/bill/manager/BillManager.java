@@ -17,6 +17,7 @@ public class BillManager {
 	private List<Bill> bills;
 	
 	Scanner s=new Scanner(System.in);
+  
 	public BillManager(String userId) {
 		this.userId = userId;
 		this.bills = new ArrayList<>();
@@ -26,7 +27,7 @@ public class BillManager {
 		//must add some code here
 		bills.add(bill);
 	}
-	
+
 	//Get all overdue bills
 	public List<Bill> getOverdueBills(List<Bill> bills) {
 		//Must add some code here
@@ -44,7 +45,11 @@ public class BillManager {
         List<Bill> filteredBills = new ArrayList<>();
         for (Bill bill : bills) {
 
-            boolean matchesCategory = bill.getBillCategory().equalsIgnoreCase(category);
+	    boolean matchesCategory = true;
+            if (!category.equalsIgnoreCase("all")) {
+            matchesCategory = bill.getBillCategory().equalsIgnoreCase(category);
+            }
+		
             boolean matchesFromDate = !bill.getDueDate().before(fromDate);
             boolean matchesToDate = !bill.getDueDate().after(toDate);
             boolean matchesStatus = bill.getPaymentStatus().equalsIgnoreCase(status);
@@ -55,8 +60,8 @@ public class BillManager {
         }
         return filteredBills;
     }
-
-    public List<Bill> getFilteredBillsOverview() {
+  
+  public List<Bill> getFilteredBillsOverview() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nView Bills Overview:");
         System.out.print("Bill Category (All, Debt Payments, House Rent, etc.): ");
