@@ -26,7 +26,10 @@ public class BillManager {
 		//must add some code here
 		bills.add(bill);
 	}
-	
+	 public List<Bill> getOverdueBills() {
+		return bills;// here i wrote the return bill as to avoid eroor because it is returning bills change accordingly when u write the code and logic 
+		 
+	 }
 	//Get all overdue bills
 	public List<Bill> getOverdueBills(List<Bill> bills) {
 		//Must add some code here
@@ -81,51 +84,30 @@ public class BillManager {
 		return overdueBills;
 	}
     
-    public List<Bill> getBillsOverview(String category, Date fromDate, Date toDate, String status) {
-        List<Bill> filteredBills = new ArrayList<>();
-        for (Bill bill : bills) {
+	public List<Bill> getBillsOverview(String category, Date fromDate, Date toDate, String status) {
+	    List<Bill> filteredBills = new ArrayList<>();
+	    for (Bill bill : bills) {
+	        // Check for null dueDate
+	        if (bill.getDueDate() == null) {
+	            continue; // Skip this bill if dueDate is null
+	        }
 
-            boolean matchesCategory = bill.getBillCategory().equalsIgnoreCase(category);
-            boolean matchesFromDate = !bill.getDueDate().before(fromDate);
-            boolean matchesToDate = !bill.getDueDate().after(toDate);
-            boolean matchesStatus = bill.getPaymentStatus().equalsIgnoreCase(status);
+	        boolean matchesCategory = category.equalsIgnoreCase("ALL") || bill.getBillCategory().equalsIgnoreCase(category);
+	        boolean matchesFromDate = !bill.getDueDate().before(fromDate);
+	        boolean matchesToDate = !bill.getDueDate().after(toDate);
 
-            if (matchesCategory && matchesFromDate && matchesToDate && matchesStatus) {
-                filteredBills.add(bill);
-            }
-        }
-        return filteredBills;
-    }
+	        boolean matchesStatus = status.equalsIgnoreCase("ALL") 
+	                                || bill.getPaymentStatus().equalsIgnoreCase(status)
+	                                || (status.equalsIgnoreCase("Pending") && bill.getOverdueDays() > 0) 
+	                                || (status.equalsIgnoreCase("Paid") && bill.getPaymentStatus().equalsIgnoreCase("Paid"))
+	                                || (status.equalsIgnoreCase("Upcoming") && bill.getOverdueDays() == 0 && !bill.getPaymentStatus().equalsIgnoreCase("Paid"));
 
-    public List<Bill> getFilteredBillsOverview() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("\nView Bills Overview:");
-        System.out.print("Bill Category (All, Debt Payments, House Rent, etc.): ");
-        String category = scanner.nextLine();
-
-        System.out.print("Bill Date From (dd-MM-yyyy): ");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-		Date fromDate = null;
-		try {
-            fromDate  = dateFormat.parse(scanner.nextLine());
-        } catch (ParseException e) {
-            System.out.println("Invalid date format. Please try again.");
-            return Collections.emptyList();
-        }
-
-        System.out.print("Bill Date To (dd-MM-yyyy): ");
-        Date toDate = null;
-        try {
-            toDate = dateFormat.parse(scanner.nextLine());
-        } catch (ParseException e) {
-            System.out.println("Invalid date format. Please try again.");
-            return Collections.emptyList();
-        }
-
-        System.out.print("Bill Status (Upcoming/Pending/Paid): ");
-        String status = scanner.nextLine();
-
-        return getBillsOverview(category, fromDate, toDate, status);
-    }
+	        if (matchesCategory && matchesFromDate && matchesToDate && matchesStatus) {
+	            filteredBills.add(bill);
+	        }
+	    }
+	    return filteredBills;
+	}
+  
 
 }
