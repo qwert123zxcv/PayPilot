@@ -26,7 +26,10 @@ public class BillManager {
 		//must add some code here
 		bills.add(bill);
 	}
-	
+	 public List<Bill> getOverdueBills() {
+		return bills;// here i wrote the return bill as to avoid eroor because it is returning bills change accordingly when u write the code and logic 
+		 
+	 }
 	//Get all overdue bills
 	public List<Bill> getOverdueBills(List<Bill> bills) {
 		//Must add some code here
@@ -100,8 +103,8 @@ public class BillManager {
         }
         return filteredBills;
     }
-
-    public List<Bill> getFilteredBillsOverview() {
+  
+  public List<Bill> getFilteredBillsOverview() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nView Bills Overview:");
         System.out.print("Bill Category (All, Debt Payments, House Rent, etc.): ");
@@ -131,5 +134,4 @@ public class BillManager {
 
         return getBillsOverview(category, fromDate, toDate, status);
     }
-
 }
