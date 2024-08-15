@@ -40,51 +40,20 @@ public class BillManager {
         List<Bill> filteredBills = new ArrayList<>();
         for (Bill bill : bills) {
 
-	    boolean matchesCategory = true;
-            if (!category.equalsIgnoreCase("all")) {
+        	boolean matchesCategory = true;
+           	if (category != null && !category.equalsIgnoreCase("all")) {
             matchesCategory = bill.getBillCategory().equalsIgnoreCase(category);
             }
 		
-            boolean matchesFromDate = !bill.getDueDate().before(fromDate);
-            boolean matchesToDate = !bill.getDueDate().after(toDate);
-            boolean matchesStatus = bill.getPaymentStatus().equalsIgnoreCase(status);
+            boolean matchesFromDate = fromDate == null? true : !bill.getDueDate().before(fromDate);
+            boolean matchesToDate = toDate == null? true : !bill.getDueDate().after(toDate);
+            boolean matchesStatus = status == null? true: bill.getPaymentStatus().equalsIgnoreCase(status);
 
             if (matchesCategory && matchesFromDate && matchesToDate && matchesStatus) {
                 filteredBills.add(bill);
             }
         }
         return filteredBills;
-    }
-  
-  public List<Bill> getFilteredBillsOverview() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("\nView Bills Overview:");
-        System.out.print("Bill Category (All, Debt Payments, House Rent, etc.): ");
-        String category = scanner.nextLine();
-
-        System.out.print("Bill Date From (dd-MM-yyyy): ");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-		Date fromDate = null;
-		try {
-            fromDate  = dateFormat.parse(scanner.nextLine());
-        } catch (ParseException e) {
-            System.out.println("Invalid date format. Please try again.");
-            return Collections.emptyList();
-        }
-
-        System.out.print("Bill Date To (dd-MM-yyyy): ");
-        Date toDate = null;
-        try {
-            toDate = dateFormat.parse(scanner.nextLine());
-        } catch (ParseException e) {
-            System.out.println("Invalid date format. Please try again.");
-            return Collections.emptyList();
-        }
-
-        System.out.print("Bill Status (Upcoming/Pending/Paid): ");
-        String status = scanner.nextLine();
-
-        return getBillsOverview(category, fromDate, toDate, status);
     }
     
 //	//If bill category and bill name is selected
