@@ -12,6 +12,7 @@ public class BillManager {
 	private List<Bill> bills;
 	
 	Scanner s=new Scanner(System.in);
+  
 	public BillManager(String userId) {
 		this.userId = userId;
 		this.bills = new ArrayList<>();
@@ -21,7 +22,7 @@ public class BillManager {
 		//must add some code here
 		bills.add(bill);
 	}
-	
+
 	//Get all overdue bills
 	public List<Bill> getOverdueBills() {
 		//Must add some code here
@@ -54,7 +55,37 @@ public class BillManager {
         }
         return filteredBills;
     }
+  
+  public List<Bill> getFilteredBillsOverview() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\nView Bills Overview:");
+        System.out.print("Bill Category (All, Debt Payments, House Rent, etc.): ");
+        String category = scanner.nextLine();
 
+        System.out.print("Bill Date From (dd-MM-yyyy): ");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date fromDate = null;
+		try {
+            fromDate  = dateFormat.parse(scanner.nextLine());
+        } catch (ParseException e) {
+            System.out.println("Invalid date format. Please try again.");
+            return Collections.emptyList();
+        }
+
+        System.out.print("Bill Date To (dd-MM-yyyy): ");
+        Date toDate = null;
+        try {
+            toDate = dateFormat.parse(scanner.nextLine());
+        } catch (ParseException e) {
+            System.out.println("Invalid date format. Please try again.");
+            return Collections.emptyList();
+        }
+
+        System.out.print("Bill Status (Upcoming/Pending/Paid): ");
+        String status = scanner.nextLine();
+
+        return getBillsOverview(category, fromDate, toDate, status);
+    }
     
 //	//If bill category and bill name is selected
 //	public List<Bill> getOverdueBills(List<Bill> bills, String bill_category, String bill_name) {
