@@ -12,6 +12,7 @@ public class BillManager {
 	private List<Bill> bills;
 	
 	Scanner s=new Scanner(System.in);
+  
 	public BillManager(String userId) {
 		this.userId = userId;
 		this.bills = new ArrayList<>();
@@ -21,7 +22,7 @@ public class BillManager {
 		//must add some code here
 		bills.add(bill);
 	}
-	
+
 	//Get all overdue bills
 	public List<Bill> getOverdueBills() {
 		//Must add some code here
