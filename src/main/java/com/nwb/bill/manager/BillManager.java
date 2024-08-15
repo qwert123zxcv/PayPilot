@@ -1,14 +1,9 @@
 
 package com.nwb.bill.manager;
 import com.nwb.bill.model.Bill;
-
-
-import java.io.File;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 
 public class BillManager {
@@ -29,7 +24,7 @@ public class BillManager {
 	}
 
 	//Get all overdue bills
-	public List<Bill> getOverdueBills(List<Bill> bills) {
+	public List<Bill> getOverdueBills() {
 		//Must add some code here
 		List<Bill> overdueBills=new ArrayList<>();
 		for(int i=0;i<bills.size();i++) {
