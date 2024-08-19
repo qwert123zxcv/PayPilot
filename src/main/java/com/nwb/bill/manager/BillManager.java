@@ -56,6 +56,10 @@ public class BillManager {
         return filteredBills;
     }
     
+    public void markBillAsPaid(Bill bill) {
+        bill.setPaymentStatus("PAID");
+        bill.setOverdueDays(0); 
+    }
 //	//If bill category and bill name is selected
 //	public List<Bill> getOverdueBills(List<Bill> bills, String bill_category, String bill_name) {
 //		//Must add some code here
