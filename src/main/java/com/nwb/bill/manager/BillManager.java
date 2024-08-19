@@ -56,6 +56,17 @@ public class BillManager {
         return filteredBills;
     }
     
+    public List<Bill> getUpcomingBills() {
+    	List<Bill> upcomingBills=new ArrayList<>();
+		for(int i=0;i<bills.size();i++) {
+			if(!bills.get(i).getPaymentStatus().equals("Paid")) {
+				upcomingBills.add(bills.get(i));
+			}
+		}
+        return upcomingBills;
+    }
+    
+    
 //	//If bill category and bill name is selected
 //	public List<Bill> getOverdueBills(List<Bill> bills, String bill_category, String bill_name) {
 //		//Must add some code here
