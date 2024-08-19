@@ -56,6 +56,16 @@ public class BillManager {
         return filteredBills;
     }
     
+    public List<Bill> getUpcomingBills() {
+    	List<Bill> upcomingBills=new ArrayList<>();
+		for(int i=0;i<bills.size();i++) {
+			if(!bills.get(i).getPaymentStatus().equals("Paid") && bills.get(i).getOverdueDays()==0) {
+				upcomingBills.add(bills.get(i));
+			}
+		}
+        return upcomingBills;
+    }
+    
     public void markBillAsPaid(Bill bill) {
         bill.setPaymentStatus("PAID");
         bill.setOverdueDays(0); 
