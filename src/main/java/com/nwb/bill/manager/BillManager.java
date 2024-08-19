@@ -59,7 +59,7 @@ public class BillManager {
     public List<Bill> getUpcomingBills() {
     	List<Bill> upcomingBills=new ArrayList<>();
 		for(int i=0;i<bills.size();i++) {
-			if(!bills.get(i).getPaymentStatus().equals("Paid")) {
+			if(!bills.get(i).getPaymentStatus().equals("Paid") && bills.get(i).getOverdueDays()==0) {
 				upcomingBills.add(bills.get(i));
 			}
 		}
