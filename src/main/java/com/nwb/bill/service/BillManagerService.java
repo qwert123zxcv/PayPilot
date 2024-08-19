@@ -1,4 +1,4 @@
-package com.nwb.service;
+package com.nwb.bill.service;
 
 import java.util.Date;
 import java.util.List;

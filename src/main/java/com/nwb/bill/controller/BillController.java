@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.nwb.bill.model.Bill;
 import com.nwb.bill.repo.BillManager;
-import com.nwb.service.BillManagerService;
+import com.nwb.bill.service.BillManagerService;
 
 import java.io.*;
 import java.text.ParseException;
