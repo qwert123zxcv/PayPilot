@@ -158,7 +158,26 @@ billManager = new BillManager("user123");
          List<Bill> bills = billManager.getBillsOverview("NON_EXISTENT_CATEGORY", null, null, null);
            assertTrue(bills.isEmpty());
       }
-      
+	// Test case for upcoming bills
+      @Test
+	    public void testGetUpcomingBills() throws ParseException {
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+	        
+	        // Add bills to the manager
+	        billManager.addNewBill(bill1);
+	        billManager.addNewBill(bill2);
+	        //billManager.addNewBill(bill3);
+
+	        // Get the upcoming bills (bills that are not paid yet)
+	        List<Bill> upcomingBills = billManager.getUpcomingBills();
+
+	        // Verify that the correct bills are returned
+	        assertEquals(2, upcomingBills.size());
+	        assertTrue(upcomingBills.contains(bill1));
+	        assertTrue(!upcomingBills.contains(bill2)); // The paid bill should not be in the list
+	    }
+		
       //test case for markBillAsPaid
       @Test
       public void testMarkBillAsPaid() {
