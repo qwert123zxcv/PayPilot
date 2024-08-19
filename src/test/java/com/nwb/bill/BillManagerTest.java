@@ -158,4 +158,24 @@ billManager = new BillManager("user123");
          List<Bill> bills = billManager.getBillsOverview("NON_EXISTENT_CATEGORY", null, null, null);
            assertTrue(bills.isEmpty());
       }
+      
+      //test case for markBillAsPaid
+      @Test
+      public void testMarkBillAsPaid() {
+          billManager.markBillAsPaid(bill1);
+          assertEquals("PAID", bill1.getPaymentStatus());
+          assertEquals(0, bill1.getOverdueDays());
+      }
+      
+      
+      //test case for snoozeBill
+      @Test
+      public void testSnoozeBill() {
+          Date oldDueDate = bill2.getDueDate();
+          Date newDueDate = new Date(oldDueDate.getTime() + 1000 * 60 * 60 * 24 * 7); // Set to 7 days later
+          billManager.snoozeBill(bill2, newDueDate);
+          assertEquals(newDueDate, bill2.getDueDate());
+          assertEquals(0, bill2.getOverdueDays());
+      }
+
 }
