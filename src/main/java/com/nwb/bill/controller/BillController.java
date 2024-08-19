@@ -42,13 +42,13 @@ public class BillController {
                      executeViewOverdueBills();
                     break;
                 case 4:
-                    viewUpcomingBills();
+                    executeViewUpcomingBills();
                     break;
                 case 5:
-                    snoozeBill();
+                    executeSnoozeBill();
                     break;
                 case 6:
-                    markBillAsPaid();
+                    executeMarkBillAsPaid();
                     break;                
                 case 7:
                     System.out.println("Exiting the application");
@@ -95,13 +95,13 @@ public class BillController {
     }
     
     
-    private static void viewUpcomingBills() {
+    private static void executeViewUpcomingBills() {
     	System.out.println("\nView Upcoming Bills:");
         List<Bill> upcomingBills = billManagerService.getUpcomingBills();
         displayBills(upcomingBills);
     }
     
-    private static void snoozeBill() {
+    private static void executeSnoozeBill() {
     	System.out.println("\nSnooze Bill:");
     	int billId = bis.getBillId();
     	Date snoozeDate = BillInputSupport.getBillDate("Bill Date From (dd-MM-yyyy): ");
@@ -114,7 +114,7 @@ public class BillController {
     	}
     }
     
-    private static void markBillAsPaid() {
+    private static void executeMarkBillAsPaid() {
     	System.out.println("\nMark Bill As Bill:");
     	int billId = bis.getBillId();
   
