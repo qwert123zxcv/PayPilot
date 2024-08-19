@@ -2,37 +2,34 @@ package com.nwb.bill.controller;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import com.nwb.bill.manager.BillManager;
 import com.nwb.bill.model.Bill;
+import com.nwb.bill.repo.BillManager;
+import com.nwb.service.BillManagerService;
 
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class BillController {
-    private static Scanner scanner = new Scanner(System.in);
+    private static Scanner s = new Scanner(System.in);
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-    private static BillManager billManager;
-    private static int billId = 0;
+    private static BillManagerService billManagerService = new BillManagerService();
+    private static BillInputSupport bis = new BillInputSupport();
 
     public static void main(String[] args) {
-        System.out.print("Enter User ID: ");
-        String userId = scanner.nextLine();
-        System.out.println("You Have Successfully Logged in" + userId);
-        billManager = new BillManager(userId); // Passing the userId to the constructor
 
         while (true) {
             System.out.println("\nBill Management System");
             System.out.println("1. Add New Bill");
             System.out.println("2. View Bills Overview");
             System.out.println("3. View Overdue Bills");
-            //System.out.println("4. View Upcoming Bills");
-           // System.out.println("5. Snooze a Bill");
-            //System.out.println("6. Mark Bill as Paid");
+            System.out.println("4. View Upcoming Bills");
+            System.out.println("5. Snooze a Bill");
+            System.out.println("6. Mark Bill as Paid");
             System.out.println("7. Exit");
             System.out.print("Choose an option: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = s.nextInt();
+            s.nextLine();
 
             switch (choice) {
                 case 1:
@@ -44,7 +41,7 @@ public class BillController {
                 case 3:
                      executeViewOverdueBills();
                     break;
-              /*  case 4:
+                case 4:
                     viewUpcomingBills();
                     break;
                 case 5:
@@ -52,8 +49,8 @@ public class BillController {
                     break;
                 case 6:
                     markBillAsPaid();
-                    break; */                
-                    case 7:
+                    break;                
+                case 7:
                     System.out.println("Exiting the application");
                     System.exit(0);
                     break;
@@ -62,125 +59,73 @@ public class BillController {
             }
         }
     }
-    private static void executeAddNewBill() // function to execute the new bill
+    
+    private static void executeAddNewBill() 
     {
-    	Scanner s= new Scanner(System.in); 
-	
-     
-        System.out.println("Enter bill name");
-        String bill_name = s.nextLine();
-        System.out.println("Enter bill category");
-        String bill_category = s.nextLine();
-        System.out.println("Enter due date(dd-mm-yyyy)");
-        boolean flag = true;
-        Date due_date = null;
-        do {
-            String dateInput = s.nextLine();
-            try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                due_date = dateFormat.parse(dateInput);
-                flag = false;
-            } catch (ParseException e) {
-                System.out.println("Invalid date format. Please enter the date in dd-mm-yyyy format.");
-            }
-        } while (flag);
-        Date todays_date = new Date();
-
-        System.out.println("Enter amount");
-        double amount = Double.parseDouble(s.nextLine().trim());
-        System.out.println("Enter reminder frequency(weekly/monthly/yearly)");
-        String reminder_frequency = s.nextLine();
-        System.out.println("Upload attachment");
-        File attachment = new File("C:\\Users\\bhatt\\Downloads\\Documents\\PayPilot");
-        if (!attachment.exists()) {
-            System.out.println("Invalid file path");
-        }
-        System.out.println("Do you want to add any notes?(y/n)");
-        char notes_response = s.nextLine().charAt(0);
-        notes_response = Character.toLowerCase(notes_response);
-        String notes = "";
-        if (notes_response == 'y') {
-            System.out.print("Write notes: ");
-            notes = s.nextLine();
-        }
-        System.out.println("Do you want to toggle recurring bill(y/n)");
-        char rec_bill = s.nextLine().charAt(0);
-        rec_bill = Character.toLowerCase(rec_bill);
-        System.out.print("Payment Status (Pending/Upcoming/Paid): ");
-        String paymentStatus = s.nextLine();
+    	System.out.println("\nNew Bill Information:");
+    	Bill newBill = bis.inputNewBill();
+    	
         System.out.println("Do you want to save?(y/n)");
         char save_response = s.nextLine().charAt(0);
         save_response = Character.toLowerCase(save_response);
+        
         if (save_response == 'y') {
-            Bill newBill = new Bill();
-            newBill.setBillName(bill_name);
-            newBill.setBillCategory(bill_category);
-            newBill.setDueDate(due_date);
-            newBill.setAmount(amount);
-            newBill.setReminderFrequency(reminder_frequency);
-            newBill.setAttachment(attachment);
-            newBill.setNotes(notes);
-            newBill.setPaymentStatus(paymentStatus);
-            if (rec_bill == 'y') {
-                newBill.setRecurring(true);
-            } else {
-                newBill.setRecurring(false);
-            }
-            newBill.setBillId(++billId);
-            if (todays_date.compareTo(due_date) > 0) {
-                long diffInMillis = Math.abs(todays_date.getTime() - due_date.getTime());
-                long diffInDays = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
-                newBill.setOverdueDays((int) diffInDays);
-            } else {
-                newBill.setOverdueDays(0);
-            }
-            billManager.addNewBill(newBill);
+            billManagerService.addNewBill(newBill);
             System.out.println("Bill saved successfully!");
         } else {
             System.out.println("Bill not saved.");
         }
     }
-
+    
     private static void executeViewOverdueBills(){
         System.out.println("\nView Overdue Bills:");
-        List<Bill> overdueBills = billManager.getOverdueBills();
+        List<Bill> overdueBills = billManagerService.getOverdueBills();
         displayBills(overdueBills);
     }
-
-	
-
-	// Placeholder methods for the different functionalities
+    
     private static void executeGetBillsOverview() {
     	  System.out.println("\nView Bills Overview:");
-          System.out.print("Bill Category (All, Debt Payments, House Rent, etc.): ");
-          String category = scanner.nextLine();
+    	  String category = bis.getBillCategory();
+    	  Date fromDate = BillInputSupport.getBillDate("Bill Date From (dd-MM-yyyy): ");
+    	  Date toDate = BillInputSupport.getBillDate("Bill Date To (dd-MM-yyyy): ");
+    	  String status = bis.getPaymentStatus();
 
-          System.out.print("Bill Date From (dd-MM-yyyy): ");
-          Date fromDate = null;
-          try {
-              fromDate = dateFormat.parse(scanner.nextLine());
-          } catch (ParseException e) {
-              System.out.println("Invalid date format. Please try again.");
-              return;
-          }
-
-          System.out.print("Bill Date To (dd-MM-yyyy): ");
-          Date toDate = null;
-          try {
-              toDate = dateFormat.parse(scanner.nextLine());
-          } catch (ParseException e) {
-              System.out.println("Invalid date format. Please try again.");
-              return;
-          }
-
-          System.out.print("Bill Status (Upcoming/Pending/Paid): ");
-          String status = scanner.nextLine();
-
-          List<Bill> bills = billManager.getBillsOverview(category, fromDate, toDate, status);
-        displayBills(bills);
+          List<Bill> bills = billManagerService.getBillsOverview(category, fromDate, toDate, status);
+          displayBills(bills);
     }
     
     
+    private static void viewUpcomingBills() {
+    	System.out.println("\nView Upcoming Bills:");
+        List<Bill> upcomingBills = billManagerService.getUpcomingBills();
+        displayBills(upcomingBills);
+    }
+    
+    private static void snoozeBill() {
+    	System.out.println("\nSnooze Bill:");
+    	int billId = bis.getBillId();
+    	Date snoozeDate = BillInputSupport.getBillDate("Bill Date From (dd-MM-yyyy): ");
+    	boolean isExistingBill = billManagerService.snoozeBill(billId, snoozeDate);
+    	if (!isExistingBill) {
+    		System.out.println("Bill does not exist");
+    	}
+    	else {
+    		System.out.println("Bill snoozed");
+    	}
+    }
+    
+    private static void markBillAsPaid() {
+    	System.out.println("\nMark Bill As Bill:");
+    	int billId = bis.getBillId();
+  
+    	boolean isExistingBill = billManagerService.markBillAsPaid(billId);
+    	if (!isExistingBill) {
+    		System.out.println("Bill does not exist");
+    	}
+    	else {
+    		System.out.println("Bill marked as paid");
+    	}
+    }
     
     private static void displayBills(List<Bill> bills) {
         if (bills.isEmpty()) {
@@ -188,17 +133,8 @@ public class BillController {
         } else {
             System.out.println("\nBill Details:");
             for (Bill bill : bills) {
-                System.out.println("Bill ID: " + bill.getBillId());
-                System.out.println("Bill Name: " + bill.getBillName());
-                System.out.println("Category: " + bill.getBillCategory());
-                System.out.println("Due Date: " + dateFormat.format(bill.getDueDate()));
-                System.out.println("Amount: " + bill.getAmount());
-                System.out.println("Reminder Frequency: " + bill.getReminderFrequency());
-               System.out.println("Is Recurring: " + bill.isRecurring());
-                System.out.println("Payment Status: " + bill.getPaymentStatus());
-                System.out.println("Overdue Days: " + bill.getOverdueDays());
-                System.out.println("-------------");
+                System.out.println(bill);
             }
         }
-    }
+    } 
 }

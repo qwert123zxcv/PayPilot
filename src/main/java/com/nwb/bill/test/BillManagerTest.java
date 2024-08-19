@@ -1,7 +1,8 @@
-package com.nwb.bill;
+package com.nwb.bill.test;
 
-import com.nwb.bill.manager.BillManager;
 import com.nwb.bill.model.Bill;
+import com.nwb.bill.repo.BillManager;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -23,7 +24,7 @@ public class BillManagerTest {
     public BillManagerTest() {
 //    	
 //        //billManager the BillManager with a sample userId
-billManager = new BillManager("user123");
+    	billManager = new BillManager();
 
         // Create sample Bill objects
         bill1 = new Bill();
@@ -96,19 +97,6 @@ billManager = new BillManager("user123");
             assertEquals(0, savedBill.getOverdueDays());
         }
 
-      
-
-		
-
-		//private void assertEquals(double d, double amount) {
-		// TODO Auto-generated method stub
-		
-	//}
-
-		//private void assertEquals(int i, int size, String string) {
-			// TODO Auto-generated method stub
-			
-		//}
 
 		@Test
        public void testGetOverdueBills() {
