@@ -1,3 +1,59 @@
+/**
+ * BillManagerTest.java
+ * 
+ * Authors Name: Hemalata L Chavan, Jatin Johar
+ * Date: 19-Aug-2024
+ * 
+ * This class contains unit tests for the BillManager class in the Bill Management System. 
+ * It uses JUnit to verify the functionality of the methods in the BillManager class.
+ * 
+ * The BillManagerTest class includes the following test cases:
+ * 
+ * 1. **testAddNewBill**: Tests the `addNewBill(Bill bill)` method of the BillManager to ensure that a new bill is added correctly.
+ *    - Creates a test bill and adds it using the BillManager.
+ *    - Verifies that the bill has been added by checking the list of bills.
+ * 
+ * 2. **testGetOverdueBills**: Tests the `getOverdueBills()` method to ensure it returns only overdue bills.
+ *    - Sets up sample bills, including overdue and non-overdue bills.
+ *    - Verifies that only the overdue bills are returned.
+ * 
+ * 3. **testGetBillsOverview_AllBills**: Tests the `getBillsOverview()` method to retrieve all bills.
+ *    - Ensures that the correct number of bills is returned when no filters are applied.
+ * 
+ * 4. **testGetBillsOverview_ByCategory**: Tests the `getBillsOverview(String category, Date fromDate, Date toDate, String status)` method 
+ *    to retrieve bills by category.
+ *    - Verifies that bills are correctly filtered by category.
+ * 
+ * 5. **testGetBillsOverview_ByDateRange**: Tests the `getBillsOverview(String category, Date fromDate, Date toDate, String status)` method 
+ *    to retrieve bills within a specified date range.
+ *    - Ensures that bills falling within the date range are returned.
+ * 
+ * 6. **testGetBillsOverview_ByStatus**: Tests the `getBillsOverview(String category, Date fromDate, Date toDate, String status)` method 
+ *    to retrieve bills by payment status.
+ *    - Verifies that bills are correctly filtered by status.
+ * 
+ * 7. **testGetBillsOverview_NoResults**: Tests the `getBillsOverview()` method with a non-existent category to ensure that no results are returned.
+ *    - Verifies that an empty list is returned when an invalid category is specified.
+ * 
+ * 8. **testGetUpcomingBills**: Tests the `getUpcomingBills()` method to ensure it returns bills that are upcoming.
+ *    - Adds sample bills and verifies that the correct upcoming bills are returned.
+ * 
+ * 9. **testMarkBillAsPaid**: Tests the `markBillAsPaid(Bill bill)` method to mark a bill as paid.
+ *    - Updates the payment status of a bill and verifies that the status and overdue days are updated correctly.
+ * 
+ * 10. **testSnoozeBill**: Tests the `snoozeBill(Bill bill, Date newDueDate)` method to update the due date of a bill.
+ *     - Changes the due date of a bill and verifies that the new due date and overdue days are updated correctly.
+ * 
+ * Dependencies:
+ * - BillManager: The class under test, responsible for managing bills.
+ * - Bill: The entity representing a bill.
+ * 
+ * Note: Ensure that the BillManager class is properly instantiated and that the necessary setup is done in the test constructor.
+ * 
+ */
+
+
+
 package com.nwb.bill.test;
 
 import com.nwb.bill.model.Bill;
