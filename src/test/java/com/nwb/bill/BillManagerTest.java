@@ -126,13 +126,15 @@ billManager = new BillManager("user123");
       @Test
       public void testGetBillsOverview_AllBills() {
     	  // Create sample Bill objects
-
+    	  
+    	  // Fetch all bills regardless of filters
          List<Bill> bills = billManager.getBillsOverview(null, null, null, null);
          assertEquals(2, bills.size());
       }
 
       @Test
       public void testGetBillsOverview_ByCategory() {
+    	// Fetch bills by category
          List<Bill> bills = billManager.getBillsOverview("HOUSE_RENT", null, null, null);
           assertEquals(1, bills.size());
           assertEquals("Electricity Bill", bills.get(0).getBillName());
@@ -140,6 +142,7 @@ billManager = new BillManager("user123");
 
       @Test
       public void testGetBillsOverview_ByDateRange() {
+    	// Fetch bills within a date range
          Date fromDate = new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 15); // 15 days ago
            Date toDate = new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 15); // 15 days from now
            List<Bill> bills = billManager.getBillsOverview(null, fromDate, toDate, null);
@@ -148,6 +151,7 @@ billManager = new BillManager("user123");
 
       @Test
       public void testGetBillsOverview_ByStatus() {
+    	   // Fetch bills by payment status
       List<Bill> bills = billManager.getBillsOverview(null, null, null, "PENDING");
       assertEquals(1, bills.size());
      assertEquals("Internet Bill", bills.get(0).getBillName());
@@ -155,6 +159,7 @@ billManager = new BillManager("user123");
 
       @Test
       public void testGetBillsOverview_NoResults() {
+    	  // Test case with no matching results
          List<Bill> bills = billManager.getBillsOverview("NON_EXISTENT_CATEGORY", null, null, null);
            assertTrue(bills.isEmpty());
       }
