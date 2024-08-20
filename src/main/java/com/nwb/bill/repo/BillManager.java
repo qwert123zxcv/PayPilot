@@ -1,5 +1,5 @@
 
-package com.nwb.bill.manager;
+package com.nwb.bill.repo;
 import com.nwb.bill.model.Bill;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,19 +7,18 @@ import java.util.*;
 
 
 public class BillManager {
-	
-	private String userId;
 	private List<Bill> bills;
-	
 	Scanner s=new Scanner(System.in);
   
-	public BillManager(String userId) {
-		this.userId = userId;
+	public BillManager() {
 		this.bills = new ArrayList<>();
+	}
+	
+	public List<Bill> getBills() {
+		return bills;
 	}
 
 	public void addNewBill(Bill bill) {
-		//must add some code here
 		bills.add(bill);
 	}
 

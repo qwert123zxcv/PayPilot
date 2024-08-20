@@ -1,5 +1,6 @@
 package com.nwb.bill.model;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /*
@@ -115,4 +116,35 @@ public class Bill {
     public void setOverdueDays(int overdueDays) {
         this.overdueDays = overdueDays;
     }
+    
+    // Additional Functions according to class diagram 
+    public void addBill() {
+    	
+    }
+    
+    public void updateBill() {
+    	
+    }
+    
+    public void deleteBill() {
+    	
+    }
+    
+    // override toString override 
+    @Override
+    public String toString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        
+        return "Bill ID: " + billId + "\n" +
+               "Bill Name: " + billName + "\n" +
+               "Category: " + billCategory + "\n" +
+               "Due Date: " + dateFormat.format(dueDate) + "\n" +
+               "Amount: " + amount + "\n" +
+               "Reminder Frequency: " + reminderFrequency + "\n" +
+               "Is Recurring: " + isRecurring + "\n" +
+               "Payment Status: " + paymentStatus + "\n" +
+               "Overdue Days: " + overdueDays + "\n" +
+               "-------------";
+    }
+
 }
