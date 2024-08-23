@@ -2,12 +2,13 @@
 package com.nwb.bill.repo;
 import com.nwb.bill.connection.DBConnection;
 import com.nwb.bill.model.Bill;
-
+import com.nwb.bill.connection.DBInsert;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 public class BillManager {
@@ -23,7 +24,38 @@ public class BillManager {
 	}
 
 	public void addNewBill(Bill bill) {
-		bills.add(bill);
+		try {
+			Connection connection = DriverManager.getConnection(
+					"jdbc:oracle:thin:@localhost:1521:xe", "system", "harsho123");
+			System.out.println("Connected " + connection);
+
+			PreparedStatement psmt = connection.prepareStatement("INSERT INTO bills (bill_id, bill_name, bill_category, due_date, amount, reminder_frequency, attachment, notes, is_recurring, payment_status, overdue_days) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			Scanner s = new Scanner(System.in);
+
+			// Set the values in the PreparedStatement
+			psmt.setInt(1, bill.getBillId());
+			psmt.setString(2, bill.getBillName());
+			psmt.setString(3, bill.getBillCategory());
+			psmt.setDate(4, bill.getDueDate());  // Use java.sql.Date here
+			psmt.setFloat(5, bill.getAmount());
+			psmt.setString(6, bill.getReminderFrequency());
+			psmt.setString(7, bill.getAttachment());
+			psmt.setString(8, bill.getNotes());
+			int rec=bill.isRecurring();
+			psmt.setInt(9, rec);
+			psmt.setString(10, bill.getPaymentStatus());
+			psmt.setInt(11, bill.getOverdueDays());
+
+			int count = psmt.executeUpdate();
+			if (count > 0) {
+				System.out.println("Record inserted");
+			} else {
+				System.out.println("No record inserted");
+			}
+			connection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	//Get all overdue bills
@@ -52,9 +84,7 @@ public class BillManager {
 						b.setRecurring(res.getInt("is_recurring") == 1); 
 						b.setPaymentStatus(res.getString("payment_status"));
 						b.setOverdueDays(res.getInt("overdue_days")); 
-
 						overdueBills.add(b);
-		
 					}
 				}
 			}

@@ -55,7 +55,7 @@ public class BillManagerService {
 		List<Bill> allBills = billManager.getBills();
 		Bill searchBill = null;
 		for (Bill bill : allBills) {
-            if (bill.getBillId() == billId) {
+            if (bill.getBillId() == Integer.parseInt(billId)) {
             	searchBill = bill;
             	break;
             }

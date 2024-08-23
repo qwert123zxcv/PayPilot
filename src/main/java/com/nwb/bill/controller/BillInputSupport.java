@@ -19,6 +19,7 @@ public class BillInputSupport {
         Bill newBill = new Bill();
 
         // Setting the Bill
+        newBill.setBillId(getBillId());
         newBill.setBillName(getBillName());
         newBill.setBillCategory(getBillCategory());
         Date dueDate = getBillDate("Enter due date (dd-mm-yyyy)");
@@ -29,7 +30,7 @@ public class BillInputSupport {
         newBill.setNotes(getNotes());
         newBill.setRecurring(isRecurring());
         newBill.setPaymentStatus(getPaymentStatus());
-        newBill.setBillId(newBill.getBillId());
+        newBill.setBillId(newBill.getBillId()+"");
 
         // Calculate overdue days if applicable
         Date todaysDate = new Date();
@@ -45,8 +46,18 @@ public class BillInputSupport {
     }
 
     String getBillId() {
-    	System.out.println("\nEnter Bill Id:");
-    	return s.nextLine();
+        int billId=0;
+        boolean flag=true;
+        do {
+        	System.out.println("\nEnter Bill Id(integer values only):");
+        	try {
+        		billId=Integer.parseInt(s.nextLine());
+        		flag=false;
+        	}catch(Exception e){
+        		System.out.println("Wrong Input. Please try again.");
+        	}
+        }while(flag);
+    	return billId+"";
     }
     
     String getBillName() {
@@ -55,27 +66,54 @@ public class BillInputSupport {
     }
 
     String getBillCategory() {
-        System.out.println("Enter bill category");
-        return s.nextLine();
+        String category=null;
+        boolean flag=true;
+        do {
+        	System.out.println("Enter bill category('House Rent', 'Debt Payments', 'Groceries', 'Internet Charges', 'Cellphone Charges')");
+        	category=s.nextLine().trim().toLowerCase();
+        	if(category.equals("house rent") || category.equals("debt payments") || category.equals("groceries") || 
+        			category.equals("internet charges") || category.equals("cellphone charges")) {
+        		flag=false;
+        	}else {
+        		System.out.println("Wrong Input. Please try again.");
+        	}
+        }while(flag);
+        return category;
     }
 
-    double getAmount() {
+    Float getAmount() {
         System.out.println("Enter amount");
-        return Double.parseDouble(s.nextLine().trim());
+        return Float.parseFloat(s.nextLine().trim());
     }
 
     String getReminderFrequency() {
-        System.out.println("Enter reminder frequency (weekly/monthly/yearly)");
-        return s.nextLine();
+    	String remFreq=null;
+        boolean flag=true;
+        do {
+        	System.out.println("Enter reminder frequency (weekly/monthly/yearly)");
+        	remFreq=s.nextLine().trim().toLowerCase();
+        	if(remFreq.equals("weekly") || remFreq.equals("monthly") || remFreq.equals("yearly")) {
+        		flag=false;
+        	}else {
+        		System.out.println("Wrong Input. Please try again.");
+        	}
+        }while(flag);
+        return remFreq;
     }
 
     String getAttachment() {
-        System.out.println("Upload attachment");
-        File attachment = new File("C:\\Users\\bhatt\\Downloads\\Documents\\PayPilot");
-        if (!attachment.exists()) {
-            return "yes";
-        }
-        return "no";
+        String attachment=null;
+        boolean flag=true;
+        do {
+        	System.out.println("Do you have attachment(yes/no)");
+        	attachment=s.nextLine().trim().toLowerCase();
+        	if(attachment.equals("yes") || attachment.equals("no")) {
+        		flag=false;
+        	}else {
+        		System.out.println("Wrong Input. Please try again.");
+        	}
+        }while(flag);
+        return attachment;
     }
 
     String getNotes() {
@@ -97,8 +135,18 @@ public class BillInputSupport {
     }
 
     String getPaymentStatus() {
-        System.out.print("Payment Status (Pending/Upcoming/Paid): ");
-        return s.nextLine();
+    	String paymentStatus=null;
+        boolean flag=true;
+        do {
+        	System.out.print("Payment Status (Pending/Upcoming/Paid): ");
+        	paymentStatus=s.nextLine().trim().toLowerCase();
+        	if(paymentStatus.equals("pending") || paymentStatus.equals("upcoming") || paymentStatus.equals("paid")) {
+        		flag=false;
+        	}else {
+        		System.out.println("Wrong Input. Please try again.");
+        	}
+        }while(flag);
+        return paymentStatus;
     }
     
     static Date getBillDate(String prompt) { 

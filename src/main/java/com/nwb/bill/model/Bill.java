@@ -14,7 +14,7 @@ public class Bill {
     private String billName;                
     private String billCategory;            
     private Date dueDate;                   
-    private double amount;            
+    private Float amount;            
     private String reminderFrequency;       
     private String attachment;                
     private String notes;                   
@@ -28,8 +28,8 @@ public class Bill {
     }
     
  // Getters
-    public String getBillId() {
-        return billId;
+    public int getBillId() {
+        return Integer.parseInt(billId);
     }
 
     public String getBillName() {
@@ -40,11 +40,12 @@ public class Bill {
         return billCategory;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public java.sql.Date getDueDate() {
+    	return (new java.sql.Date(dueDate.getTime()));
+//        return dueDate;
     }
 
-    public double getAmount() {
+    public Float getAmount() {
         return amount;
     }
 
@@ -60,8 +61,9 @@ public class Bill {
         return notes;
     }
 
-    public boolean isRecurring() {
-        return isRecurring;
+    public int isRecurring() {
+    	if(isRecurring) return 1;
+        return 0;
     }
 
     public String getPaymentStatus() {
@@ -89,7 +91,7 @@ public class Bill {
         this.dueDate = dueDate;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Float amount) {
         this.amount = amount;
     }
 
