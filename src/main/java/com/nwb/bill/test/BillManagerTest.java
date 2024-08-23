@@ -84,7 +84,7 @@ public class BillManagerTest {
 
         // Create sample Bill objects
         bill1 = new Bill();
-        bill1.setBillId(1);
+        bill1.setBillId("1");
         bill1.setBillName("Electricity Bill");
         bill1.setBillCategory("HOUSE_RENT");
         bill1.setDueDate(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 5)); // Due in 5 days
@@ -97,7 +97,7 @@ public class BillManagerTest {
         bill1.setOverdueDays(0);
 
         bill2 = new Bill();
-        bill2.setBillId(2);
+        bill2.setBillId("2");
         bill2.setBillName("Internet Bill");
         bill2.setBillCategory("INTERNET_CHARGES");
         bill2.setDueDate(new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 10)); // Overdue by 10 days
@@ -131,7 +131,7 @@ public class BillManagerTest {
 		        fail("Failed to parse date.");
 		    }
 		    testBill.setReminderFrequency("monthly");
-		    testBill.setAttachment(new File("C:\\Users\\bhatt\\Downloads\\Documents\\PayPilot"));
+		    testBill.setAttachment("yes");
 		    testBill.setNotes("Test notes");
 		    testBill.setRecurring(true);
 		    testBill.setPaymentStatus("Not Paid");

@@ -103,7 +103,7 @@ public class BillController {
     
     private static void executeSnoozeBill() {
     	System.out.println("\nSnooze Bill:");
-    	int billId = bis.getBillId();
+    	String billId = bis.getBillId();
     	Date snoozeDate = BillInputSupport.getBillDate("Bill Date From (dd-MM-yyyy): ");
     	boolean isExistingBill = billManagerService.snoozeBill(billId, snoozeDate);
     	if (!isExistingBill) {
@@ -116,7 +116,7 @@ public class BillController {
     
     private static void executeMarkBillAsPaid() {
     	System.out.println("\nMark Bill As Bill:");
-    	int billId = bis.getBillId();
+    	String billId = bis.getBillId();
   
     	boolean isExistingBill = billManagerService.markBillAsPaid(billId);
     	if (!isExistingBill) {

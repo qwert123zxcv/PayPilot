@@ -11,7 +11,7 @@ import com.nwb.bill.model.Bill;
 
 public class BillInputSupport {
     private static Scanner s = new Scanner(System.in);
-    private static int billId = 0;
+//    private static int billId = 0;
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     Bill inputNewBill() {
@@ -29,7 +29,7 @@ public class BillInputSupport {
         newBill.setNotes(getNotes());
         newBill.setRecurring(isRecurring());
         newBill.setPaymentStatus(getPaymentStatus());
-        newBill.setBillId(++billId);
+        newBill.setBillId(newBill.getBillId());
 
         // Calculate overdue days if applicable
         Date todaysDate = new Date();
@@ -40,14 +40,13 @@ public class BillInputSupport {
         } else {
             newBill.setOverdueDays(0);
         }
-
         // Returning bill
         return newBill;
     }
 
-    int getBillId() {
+    String getBillId() {
     	System.out.println("\nEnter Bill Id:");
-    	return s.nextInt();
+    	return s.nextLine();
     }
     
     String getBillName() {
@@ -70,14 +69,13 @@ public class BillInputSupport {
         return s.nextLine();
     }
 
-    File getAttachment() {
+    String getAttachment() {
         System.out.println("Upload attachment");
         File attachment = new File("C:\\Users\\bhatt\\Downloads\\Documents\\PayPilot");
         if (!attachment.exists()) {
-            System.out.println("Invalid file path");
-            return null;
+            return "yes";
         }
-        return attachment;
+        return "no";
     }
 
     String getNotes() {

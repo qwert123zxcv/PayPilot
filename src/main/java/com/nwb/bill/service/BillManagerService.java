@@ -32,7 +32,7 @@ public class BillManagerService {
 		return upcomingBills;
 	}
 
-	public boolean snoozeBill(int billId, Date snoozeDate) {
+	public boolean snoozeBill(String billId, Date snoozeDate) {
 		
 		Bill searchBill = searchBillWithId(billId);
 		if (searchBill != null) {
@@ -42,7 +42,7 @@ public class BillManagerService {
 		return false;
 	}
 	
-	public boolean markBillAsPaid(int billId) {
+	public boolean markBillAsPaid(String billId) {
 		Bill searchBill = searchBillWithId(billId);
 		if (searchBill != null) {
 			billManager.markBillAsPaid(searchBill);
@@ -51,7 +51,7 @@ public class BillManagerService {
 		return false;
 	}
 	
-	public Bill searchBillWithId(int billId) {
+	public Bill searchBillWithId(String billId) {
 		List<Bill> allBills = billManager.getBills();
 		Bill searchBill = null;
 		for (Bill bill : allBills) {

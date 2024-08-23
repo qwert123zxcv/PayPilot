@@ -10,13 +10,13 @@ import java.util.*;
  */
 
 public class Bill {
-    private int billId;                     
+    private String billId;                     
     private String billName;                
     private String billCategory;            
     private Date dueDate;                   
     private double amount;            
     private String reminderFrequency;       
-    private File attachment;                
+    private String attachment;                
     private String notes;                   
     private boolean isRecurring;            
     private String paymentStatus;           
@@ -28,7 +28,7 @@ public class Bill {
     }
     
  // Getters
-    public int getBillId() {
+    public String getBillId() {
         return billId;
     }
 
@@ -52,7 +52,7 @@ public class Bill {
         return reminderFrequency;
     }
 
-    public File getAttachment() {
+    public String getAttachment() {
         return attachment;
     }
 
@@ -73,7 +73,7 @@ public class Bill {
     }
 
     // Setters
-    public void setBillId(int billId) {
+    public void setBillId(String billId) {
         this.billId = billId;
     }
 
@@ -97,7 +97,7 @@ public class Bill {
         this.reminderFrequency = reminderFrequency;
     }
 
-    public void setAttachment(File attachment) {
+    public void setAttachment(String attachment) {
         this.attachment = attachment;
     }
 
