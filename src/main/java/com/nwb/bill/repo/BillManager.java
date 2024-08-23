@@ -4,10 +4,8 @@ import com.nwb.bill.connection.DBConnection;
 import com.nwb.bill.model.Bill;
 
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.Date;
+import java.util.*;
 
 
 public class BillManager {
