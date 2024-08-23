@@ -17,6 +17,43 @@ public class BillManager {
 	}
 
 	public List<Bill> getBills() {
+		List<Bill> allBills =new ArrayList<>();
+		Connection conn=DBConnection.getConnection();
+		String sql="SELECT * FROM bills";
+		Statement stmt=null;
+		ResultSet res=null;
+		try {
+			stmt=conn.createStatement();
+			res=stmt.executeQuery(sql);
+			if (res != null) { 
+				while(res.next()) {
+					Bill b=new Bill();
+					b.setBillId(res.getString("bill_id"));
+					b.setBillName(res.getString("bill_name"));
+					b.setBillCategory(res.getString("bill_category"));
+					b.setDueDate(res.getDate("due_date"));
+					b.setAmount(res.getFloat("amount"));  
+					b.setReminderFrequency(res.getString("reminder_frequency"));
+					b.setAttachment(res.getString("attachment"));
+					b.setNotes(res.getString("notes"));
+					b.setRecurring(res.getInt("is_recurring") == 1); 
+					b.setPaymentStatus(res.getString("payment_status"));
+					b.setOverdueDays(res.getInt("overdue_days")); 
+					allBills.add(b);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println();
+			e.printStackTrace();
+		}finally {
+			try {
+				if (res != null) res.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+		}
 		return bills;
 	}
 
