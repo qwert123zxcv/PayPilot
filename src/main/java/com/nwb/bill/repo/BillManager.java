@@ -117,22 +117,71 @@ public class BillManager {
 
 	public List<Bill> getBillsOverview(String category, Date fromDate, Date toDate, String status) {
 		List<Bill> filteredBills = new ArrayList<>();
-		for (Bill bill : bills) {
+		Connection conn = DBConnection.getConnection();
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+	    StringBuilder sql = new StringBuilder("SELECT * FROM bills WHERE 1=1");
+	    
+	    boolean categoryCondition = category != null && !category.equalsIgnoreCase("all") && category.length() != 0;
+	    boolean fromDateCondition = fromDate != null;
+	    boolean toDateCondition = toDate != null;
+	    boolean statusCondition = status != null && status.length() != 0;
 
-			boolean matchesCategory = true;
-			if (category != null && !category.equalsIgnoreCase("all")) {
-				matchesCategory = bill.getBillCategory().equalsIgnoreCase(category);
-			}
+	    if (categoryCondition) {
+	        sql.append(" AND bill_category = ?");
+	    }
+	    if (fromDateCondition) {
+	        sql.append(" AND due_date >= ?");
+	    }
+	    if (toDateCondition) {
+	        sql.append(" AND due_date <= ?");
+	    }
+	    if (statusCondition) {
+	        sql.append(" AND payment_status = ?");
+	    }
 
-			boolean matchesFromDate = fromDate == null? true : !bill.getDueDate().before(fromDate);
-			boolean matchesToDate = toDate == null? true : !bill.getDueDate().after(toDate);
-			boolean matchesStatus = status == null? true: bill.getPaymentStatus().equalsIgnoreCase(status);
+	    try{
+	    	String query = sql.toString();
+	    	pstmt = conn.prepareStatement(query);
+	        
+	        int paramIndex = 1;
+	        if (categoryCondition) {
+	            pstmt.setString(paramIndex++, category);
+	        }
+	        if (fromDateCondition) {
+	        	// Convert java.util.Date to java.sql.Date
+	            pstmt.setDate(paramIndex++, new java.sql.Date(fromDate.getTime())); 
+	        }
+	        if (toDateCondition) {
+	        	// Convert java.util.Date to java.sql.Date
+	            pstmt.setDate(paramIndex++, new java.sql.Date(toDate.getTime())); 
+	        }
+	        if (statusCondition) {
+	            pstmt.setString(paramIndex++, status);
+	        }
 
-			if (matchesCategory && matchesFromDate && matchesToDate && matchesStatus) {
-				filteredBills.add(bill);
-			}
-		}
-		return filteredBills;
+	        rs = pstmt.executeQuery();
+	            while (rs.next()) {
+	                Bill bill = new Bill();
+	                bill.setBillId(rs.getString("bill_id"));
+	                bill.setBillName(rs.getString("bill_name"));
+	                bill.setBillCategory(rs.getString("bill_category"));
+	                bill.setDueDate(rs.getDate("due_date"));
+	                bill.setAmount(rs.getFloat("amount"));
+	                bill.setReminderFrequency(rs.getString("reminder_frequency"));
+	                bill.setAttachment(rs.getString("attachment"));
+	                bill.setNotes(rs.getString("notes"));
+	                bill.setRecurring(rs.getInt("is_recurring") == 1);
+	                bill.setPaymentStatus(rs.getString("payment_status"));
+	                bill.setOverdueDays(rs.getInt("overdue_days"));
+	                filteredBills.add(bill);
+	            }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return filteredBills;
 	}
 
 	public List<Bill> getUpcomingBills() {
