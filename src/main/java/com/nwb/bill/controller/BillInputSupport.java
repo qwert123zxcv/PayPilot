@@ -46,7 +46,7 @@ public class BillInputSupport {
 
     String getBillId() {
     	System.out.println("\nEnter Bill Id:");
-    	return s.nextLine();
+    	return s.nextLine().trim();
     }
     
     String getBillName() {

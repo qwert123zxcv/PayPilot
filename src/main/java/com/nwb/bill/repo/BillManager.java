@@ -45,14 +45,6 @@ public class BillManager {
 		} catch (SQLException e) {
 			System.out.println();
 			e.printStackTrace();
-		}finally {
-			try {
-				if (res != null) res.close();
-				if (stmt != null) stmt.close();
-				if (conn != null) conn.close();
-			} catch (SQLException ex) {
-				ex.printStackTrace();
-			}
 		}
 		return bills;
 	}
@@ -195,8 +187,20 @@ public class BillManager {
 	}
 
 	public void markBillAsPaid(Bill bill) {
-		bill.setPaymentStatus("PAID");
-		bill.setOverdueDays(0); 
+		String sql = "UPDATE bills SET payment_status = ?, overdue_days = ? WHERE bill_id = ?";
+	    
+	    try{
+	    	Connection conn = DBConnection.getConnection();
+	    	PreparedStatement pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, "Paid");
+	        pstmt.setInt(2, 0);
+	        pstmt.setString(3, bill.getBillId());
+	        pstmt.executeUpdate();  
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+//		bill.setPaymentStatus("PAID");
+//		bill.setOverdueDays(0); 
 	}
 
 	public void snoozeBill(Bill bill, Date snoozeDate) {

@@ -1,8 +1,10 @@
 package com.nwb.bill.service;
 
+import java.sql.*;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
 
+import com.nwb.bill.connection.DBConnection;
 import com.nwb.bill.model.Bill;
 import com.nwb.bill.repo.BillManager;
 
@@ -52,16 +54,50 @@ public class BillManagerService {
 	}
 	
 	public Bill searchBillWithId(String billId) {
-		List<Bill> allBills = billManager.getBills();
 		Bill searchBill = null;
-		for (Bill bill : allBills) {
-            if (bill.getBillId() == billId) {
-            	searchBill = bill;
-            	break;
-            }
-        }
-		return searchBill;
-	}
-
+	    String sql = "SELECT * FROM bills WHERE bill_id = ?";
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    
+	    try{    
+	    	conn = DBConnection.getConnection();
+	    	pstmt = conn.prepareStatement(sql);
+	    	
+	        pstmt.setString(1, billId);
+	        
+	        try{
+	        	ResultSet rs = pstmt.executeQuery();
+	            if (rs.next()) {
+	                searchBill = new Bill();
+	                searchBill.setBillId(rs.getString("bill_id"));
+	                searchBill.setBillName(rs.getString("bill_name"));
+	                searchBill.setBillCategory(rs.getString("bill_category"));
+	                searchBill.setDueDate(rs.getDate("due_date"));
+	                searchBill.setAmount(rs.getDouble("amount"));
+	                searchBill.setReminderFrequency(rs.getString("reminder_frequency"));
+	                searchBill.setAttachment(rs.getString("attachment"));
+	                searchBill.setNotes(rs.getString("notes"));
+	                searchBill.setRecurring(rs.getInt("is_recurring") == 1);
+	                searchBill.setPaymentStatus(rs.getString("payment_status"));
+	                searchBill.setOverdueDays(rs.getInt("overdue_days"));
+	            }   
+	        } catch (SQLException e) {
+	        e.printStackTrace();
+	        }
+	    }catch(SQLException e){
+	    	e.printStackTrace();
+	    }
+	    return searchBill;
+	       
+//		List<Bill> allBills = billManager.getBills();
+//		Bill searchBill = null;
+//		for (Bill bill : allBills) {
+//            if (bill.getBillId() == billId) {
+//            	searchBill = bill;
+//            	break;
+//            }
+//        }
+//		return searchBill;
 	
+	}
 }
