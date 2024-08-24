@@ -5,6 +5,7 @@ import com.nwb.bill.model.Bill;
 
 import java.sql.*;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.*;
 
 
@@ -199,13 +200,21 @@ public class BillManager {
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
-//		bill.setPaymentStatus("PAID");
-//		bill.setOverdueDays(0); 
 	}
 
 	public void snoozeBill(Bill bill, Date snoozeDate) {
-		bill.setDueDate(snoozeDate);
-		bill.setOverdueDays(0); 
+		String sql = "UPDATE bills SET due_date = ?, overdue_days = ? WHERE bill_id = ?";
+        
+	    try {
+	    	Connection conn = DBConnection.getConnection();
+	    	PreparedStatement pstmt = conn.prepareStatement(sql);
+	    	pstmt.setDate(1, new java.sql.Date(snoozeDate.getTime())); 
+	        pstmt.setInt(2, 0); 
+	        pstmt.setString(3, bill.getBillId());
+	        pstmt.executeUpdate();	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }    
 	}
 
 	//	//If bill category and bill name is selected

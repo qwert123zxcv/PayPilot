@@ -34,14 +34,26 @@ public class BillManagerService {
 		return upcomingBills;
 	}
 
-	public boolean snoozeBill(String billId, Date snoozeDate) {
+	public int snoozeBill(String billId, Date snoozeDate) {
+		int returnValue = 3;
 		
-		Bill searchBill = searchBillWithId(billId);
-		if (searchBill != null) {
-			billManager.snoozeBill(searchBill, snoozeDate);
-			return true;
+		Date currentDate = new Date();
+		if (snoozeDate.before(currentDate)) {
+			returnValue = 2;
 		}
-		return false;
+		else {
+			Bill searchBill = searchBillWithId(billId);
+			
+			if (searchBill != null) {
+				billManager.snoozeBill(searchBill, snoozeDate);
+				return 1;
+			}
+		}
+		
+		return returnValue;
+		// 1 -> Bill found 
+		// 2 -> snooze date is less than current date
+		// 3 -> bill not found 
 	}
 	
 	public boolean markBillAsPaid(String billId) {
