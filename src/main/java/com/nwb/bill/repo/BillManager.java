@@ -126,6 +126,7 @@ public class BillManager {
 
 
 	public List<Bill> getBillsOverview(String category, Date fromDate, Date toDate, String status) {
+	    
 		List<Bill> filteredBills = new ArrayList<>();
 		Connection conn = DBConnection.getConnection();
 		PreparedStatement pstmt=null;
@@ -195,13 +196,39 @@ public class BillManager {
 	}
 
 	public List<Bill> getUpcomingBills() {
-		List<Bill> upcomingBills=new ArrayList<>();
-		for(int i=0;i<bills.size();i++) {
-			if(!bills.get(i).getPaymentStatus().equals("Paid") && bills.get(i).getOverdueDays()==0) {
-				upcomingBills.add(bills.get(i));
-			}
-		}
-		return upcomingBills;
+		List<Bill> upcomingBills = new ArrayList<>();
+		Connection conn = DBConnection.getConnection();
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+	    StringBuilder sql = new StringBuilder("SELECT * FROM bills WHERE payment_status = ?");
+
+	    try{
+	    	String query = sql.toString();
+	    	pstmt = conn.prepareStatement(query);
+	        pstmt.setString(1, "upcoming");
+	        
+	        rs = pstmt.executeQuery();
+	            while (rs.next()) {
+	                Bill bill = new Bill();
+	                bill.setBillId(rs.getString("bill_id"));
+	                bill.setBillName(rs.getString("bill_name"));
+	                bill.setBillCategory(rs.getString("bill_category"));
+	                bill.setDueDate(rs.getDate("due_date"));
+	                bill.setAmount(rs.getFloat("amount"));
+	                bill.setReminderFrequency(rs.getString("reminder_frequency"));
+	                bill.setAttachment(rs.getString("attachment"));
+	                bill.setNotes(rs.getString("notes"));
+	                bill.setRecurring(rs.getInt("is_recurring") == 1);
+	                bill.setPaymentStatus(rs.getString("payment_status"));
+	                bill.setOverdueDays(rs.getInt("overdue_days"));
+	                upcomingBills.add(bill);
+	            }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return upcomingBills;
 	}
 
 	public void markBillAsPaid(Bill bill) {
@@ -210,7 +237,7 @@ public class BillManager {
 	    try{
 	    	Connection conn = DBConnection.getConnection();
 	    	PreparedStatement pstmt = conn.prepareStatement(sql);
-	        pstmt.setString(1, "Paid");
+	        pstmt.setString(1, "paid");
 	        pstmt.setInt(2, 0);
 	        pstmt.setString(3, bill.getBillId()+"");
 	        pstmt.executeUpdate();  
