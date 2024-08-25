@@ -2,13 +2,9 @@
 package com.nwb.bill.repo;
 import com.nwb.bill.connection.DBConnection;
 import com.nwb.bill.model.Bill;
-import com.nwb.bill.connection.DBInsert;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 
 public class BillManager {
@@ -30,7 +26,6 @@ public class BillManager {
 			System.out.println("Connected " + connection);
 
 			PreparedStatement psmt = connection.prepareStatement("INSERT INTO bills (bill_id, bill_name, bill_category, due_date, amount, reminder_frequency, attachment, notes, is_recurring, payment_status, overdue_days) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			Scanner s = new Scanner(System.in);
 
 			// Set the values in the PreparedStatement
 			psmt.setInt(1, bill.getBillId());
@@ -63,30 +58,26 @@ public class BillManager {
 		//Must add some code here
 		List<Bill> overdueBills=new ArrayList<>();
 		Connection conn=DBConnection.getConnection();
-		String sql="SELECT * FROM bills";
+		String sql="SELECT * FROM bills where overdue_days>0";
 		Statement stmt=null;
 		ResultSet res=null;
 		try {
 			stmt=conn.createStatement();
 			res=stmt.executeQuery(sql);
-			if (res != null) { 
-				while(res.next()) {
-					if(res.getInt("overdue_days")>0) {
-						Bill b=new Bill();
-						b.setBillId(res.getString("bill_id"));
-						b.setBillName(res.getString("bill_name"));
-						b.setBillCategory(res.getString("bill_category"));
-						b.setDueDate(res.getDate("due_date"));
-						b.setAmount(res.getFloat("amount"));  
-						b.setReminderFrequency(res.getString("reminder_frequency"));
-						b.setAttachment(res.getString("attachment"));
-						b.setNotes(res.getString("notes"));
-						b.setRecurring(res.getInt("is_recurring") == 1); 
-						b.setPaymentStatus(res.getString("payment_status"));
-						b.setOverdueDays(res.getInt("overdue_days")); 
-						overdueBills.add(b);
-					}
-				}
+			while(res.next()) {
+				Bill b=new Bill();
+				b.setBillId(res.getString("bill_id"));
+				b.setBillName(res.getString("bill_name"));
+				b.setBillCategory(res.getString("bill_category"));
+				b.setDueDate(res.getDate("due_date"));
+				b.setAmount(res.getFloat("amount"));  
+				b.setReminderFrequency(res.getString("reminder_frequency"));
+				b.setAttachment(res.getString("attachment"));
+				b.setNotes(res.getString("notes"));
+				b.setRecurring(res.getInt("is_recurring") == 1); 
+				b.setPaymentStatus(res.getString("payment_status"));
+				b.setOverdueDays(res.getInt("overdue_days")); 
+				overdueBills.add(b);
 			}
 		} catch (SQLException e) {
 			System.out.println();
@@ -100,12 +91,6 @@ public class BillManager {
 				ex.printStackTrace();
 			}
 		}
-
-		//		for(int i=0;i<bills.size();i++) {
-		//			if(bills.get(i).getOverdueDays()>0) {
-		//				overdueBills.add(bills.get(i));
-		//			}
-		//		}
 		return overdueBills;
 	}
 
