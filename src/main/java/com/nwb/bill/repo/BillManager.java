@@ -4,6 +4,7 @@ import com.nwb.bill.connection.DBConnection;
 import com.nwb.bill.model.Bill;
 import java.sql.*;
 import java.util.*;
+
 import java.util.Date;
 
 
@@ -16,6 +17,35 @@ public class BillManager {
 	}
 
 	public List<Bill> getBills() {
+		List<Bill> allBills =new ArrayList<>();
+		Connection conn=DBConnection.getConnection();
+		String sql="SELECT * FROM bills";
+		Statement stmt=null;
+		ResultSet res=null;
+		try {
+			stmt=conn.createStatement();
+			res=stmt.executeQuery(sql);
+			if (res != null) { 
+				while(res.next()) {
+					Bill b=new Bill();
+					b.setBillId(res.getString("bill_id"));
+					b.setBillName(res.getString("bill_name"));
+					b.setBillCategory(res.getString("bill_category"));
+					b.setDueDate(res.getDate("due_date"));
+					b.setAmount(res.getFloat("amount"));  
+					b.setReminderFrequency(res.getString("reminder_frequency"));
+					b.setAttachment(res.getString("attachment"));
+					b.setNotes(res.getString("notes"));
+					b.setRecurring(res.getInt("is_recurring") == 1); 
+					b.setPaymentStatus(res.getString("payment_status"));
+					b.setOverdueDays(res.getInt("overdue_days")); 
+					allBills.add(b);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println();
+			e.printStackTrace();
+		}
 		return bills;
 	}
 
@@ -28,7 +58,7 @@ public class BillManager {
 			PreparedStatement psmt = connection.prepareStatement("INSERT INTO bills (bill_id, bill_name, bill_category, due_date, amount, reminder_frequency, attachment, notes, is_recurring, payment_status, overdue_days) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 			// Set the values in the PreparedStatement
-			psmt.setInt(1, bill.getBillId());
+			psmt.setString(1, bill.getBillId()+"");
 			psmt.setString(2, bill.getBillName());
 			psmt.setString(3, bill.getBillCategory());
 			psmt.setDate(4, bill.getDueDate());  // Use java.sql.Date here
@@ -97,22 +127,71 @@ public class BillManager {
 
 	public List<Bill> getBillsOverview(String category, Date fromDate, Date toDate, String status) {
 		List<Bill> filteredBills = new ArrayList<>();
-		for (Bill bill : bills) {
+		Connection conn = DBConnection.getConnection();
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+	    StringBuilder sql = new StringBuilder("SELECT * FROM bills WHERE 1=1");
+	    
+	    boolean categoryCondition = category != null && !category.equalsIgnoreCase("all") && category.length() != 0;
+	    boolean fromDateCondition = fromDate != null;
+	    boolean toDateCondition = toDate != null;
+	    boolean statusCondition = status != null && status.length() != 0;
 
-			boolean matchesCategory = true;
-			if (category != null && !category.equalsIgnoreCase("all")) {
-				matchesCategory = bill.getBillCategory().equalsIgnoreCase(category);
-			}
+	    if (categoryCondition) {
+	        sql.append(" AND bill_category = ?");
+	    }
+	    if (fromDateCondition) {
+	        sql.append(" AND due_date >= ?");
+	    }
+	    if (toDateCondition) {
+	        sql.append(" AND due_date <= ?");
+	    }
+	    if (statusCondition) {
+	        sql.append(" AND payment_status = ?");
+	    }
 
-			boolean matchesFromDate = fromDate == null? true : !bill.getDueDate().before(fromDate);
-			boolean matchesToDate = toDate == null? true : !bill.getDueDate().after(toDate);
-			boolean matchesStatus = status == null? true: bill.getPaymentStatus().equalsIgnoreCase(status);
+	    try{
+	    	String query = sql.toString();
+	    	pstmt = conn.prepareStatement(query);
+	        
+	        int paramIndex = 1;
+	        if (categoryCondition) {
+	            pstmt.setString(paramIndex++, category);
+	        }
+	        if (fromDateCondition) {
+	        	// Convert java.util.Date to java.sql.Date
+	            pstmt.setDate(paramIndex++, new java.sql.Date(fromDate.getTime())); 
+	        }
+	        if (toDateCondition) {
+	        	// Convert java.util.Date to java.sql.Date
+	            pstmt.setDate(paramIndex++, new java.sql.Date(toDate.getTime())); 
+	        }
+	        if (statusCondition) {
+	            pstmt.setString(paramIndex++, status);
+	        }
 
-			if (matchesCategory && matchesFromDate && matchesToDate && matchesStatus) {
-				filteredBills.add(bill);
-			}
-		}
-		return filteredBills;
+	        rs = pstmt.executeQuery();
+	            while (rs.next()) {
+	                Bill bill = new Bill();
+	                bill.setBillId(rs.getString("bill_id"));
+	                bill.setBillName(rs.getString("bill_name"));
+	                bill.setBillCategory(rs.getString("bill_category"));
+	                bill.setDueDate(rs.getDate("due_date"));
+	                bill.setAmount(rs.getFloat("amount"));
+	                bill.setReminderFrequency(rs.getString("reminder_frequency"));
+	                bill.setAttachment(rs.getString("attachment"));
+	                bill.setNotes(rs.getString("notes"));
+	                bill.setRecurring(rs.getInt("is_recurring") == 1);
+	                bill.setPaymentStatus(rs.getString("payment_status"));
+	                bill.setOverdueDays(rs.getInt("overdue_days"));
+	                filteredBills.add(bill);
+	            }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return filteredBills;
 	}
 
 	public List<Bill> getUpcomingBills() {
@@ -126,13 +205,33 @@ public class BillManager {
 	}
 
 	public void markBillAsPaid(Bill bill) {
-		bill.setPaymentStatus("PAID");
-		bill.setOverdueDays(0); 
+		String sql = "UPDATE bills SET payment_status = ?, overdue_days = ? WHERE bill_id = ?";
+	    
+	    try{
+	    	Connection conn = DBConnection.getConnection();
+	    	PreparedStatement pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, "Paid");
+	        pstmt.setInt(2, 0);
+	        pstmt.setString(3, bill.getBillId()+"");
+	        pstmt.executeUpdate();  
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	public void snoozeBill(Bill bill, Date snoozeDate) {
-		bill.setDueDate(snoozeDate);
-		bill.setOverdueDays(0); 
+		String sql = "UPDATE bills SET due_date = ?, overdue_days = ? WHERE bill_id = ?";
+        
+	    try {
+	    	Connection conn = DBConnection.getConnection();
+	    	PreparedStatement pstmt = conn.prepareStatement(sql);
+	    	pstmt.setDate(1, new java.sql.Date(snoozeDate.getTime())); 
+	        pstmt.setInt(2, 0); 
+	        pstmt.setString(3, bill.getBillId()+"");
+	        pstmt.executeUpdate();	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }    
 	}
 
 	//	//If bill category and bill name is selected
