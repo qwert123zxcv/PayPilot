@@ -25,6 +25,11 @@
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+	    <groupId>com.oracle.database.jdbc</groupId>
+	    <artifactId>ojdbc8</artifactId>
+	    <version>19.8.0.0</version> <!-- or the version you are using -->
+	</dependency>
   </dependencies>
 
   <build>

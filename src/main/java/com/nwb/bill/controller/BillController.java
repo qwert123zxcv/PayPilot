@@ -1,18 +1,11 @@
 package com.nwb.bill.controller;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import com.nwb.bill.model.Bill;
-import com.nwb.bill.repo.BillManager;
 import com.nwb.bill.service.BillManagerService;
-
-import java.io.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 public class BillController {
     private static Scanner s = new Scanner(System.in);
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     private static BillManagerService billManagerService = new BillManagerService();
     private static BillInputSupport bis = new BillInputSupport();
 
@@ -103,20 +96,24 @@ public class BillController {
     
     private static void executeSnoozeBill() {
     	System.out.println("\nSnooze Bill:");
-    	int billId = bis.getBillId();
-    	Date snoozeDate = BillInputSupport.getBillDate("Bill Date From (dd-MM-yyyy): ");
-    	boolean isExistingBill = billManagerService.snoozeBill(billId, snoozeDate);
-    	if (!isExistingBill) {
-    		System.out.println("Bill does not exist");
+    	String billId = bis.getBillId();
+    	Date snoozeDate = BillInputSupport.getBillDate("Snooze Date (dd-MM-yyyy): ");
+    	int executeSnoozeValue = billManagerService.snoozeBill(billId, snoozeDate);
+    	if (executeSnoozeValue == 1) {
+    		System.out.println("Bill snoozed");
+    	}
+    	else if (executeSnoozeValue == 2) {
+    		System.out.println("Snooze date should be greater than today's date");
     	}
     	else {
-    		System.out.println("Bill snoozed");
+    		System.out.println("Bill not found");
     	}
     }
     
+
     private static void executeMarkBillAsPaid() {
     	System.out.println("\nMark Bill As Bill:");
-    	int billId = bis.getBillId();
+    	String billId = bis.getBillId();
   
     	boolean isExistingBill = billManagerService.markBillAsPaid(billId);
     	if (!isExistingBill) {

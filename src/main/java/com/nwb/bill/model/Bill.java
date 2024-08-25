@@ -10,13 +10,13 @@ import java.util.*;
  */
 
 public class Bill {
-    private int billId;                     
+    private String billId;                     
     private String billName;                
     private String billCategory;            
     private Date dueDate;                   
-    private double amount;            
+    private Float amount;            
     private String reminderFrequency;       
-    private File attachment;                
+    private String attachment;                
     private String notes;                   
     private boolean isRecurring;            
     private String paymentStatus;           
@@ -29,7 +29,7 @@ public class Bill {
     
  // Getters
     public int getBillId() {
-        return billId;
+        return Integer.parseInt(billId);
     }
 
     public String getBillName() {
@@ -40,11 +40,12 @@ public class Bill {
         return billCategory;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public java.sql.Date getDueDate() {
+    	return (new java.sql.Date(dueDate.getTime()));
+//        return dueDate;
     }
 
-    public double getAmount() {
+    public Float getAmount() {
         return amount;
     }
 
@@ -52,7 +53,7 @@ public class Bill {
         return reminderFrequency;
     }
 
-    public File getAttachment() {
+    public String getAttachment() {
         return attachment;
     }
 
@@ -60,8 +61,9 @@ public class Bill {
         return notes;
     }
 
-    public boolean isRecurring() {
-        return isRecurring;
+    public int isRecurring() {
+    	if(isRecurring) return 1;
+        return 0;
     }
 
     public String getPaymentStatus() {
@@ -73,7 +75,7 @@ public class Bill {
     }
 
     // Setters
-    public void setBillId(int billId) {
+    public void setBillId(String billId) {
         this.billId = billId;
     }
 
@@ -89,7 +91,7 @@ public class Bill {
         this.dueDate = dueDate;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Float amount) {
         this.amount = amount;
     }
 
@@ -97,7 +99,7 @@ public class Bill {
         this.reminderFrequency = reminderFrequency;
     }
 
-    public void setAttachment(File attachment) {
+    public void setAttachment(String attachment) {
         this.attachment = attachment;
     }
 
