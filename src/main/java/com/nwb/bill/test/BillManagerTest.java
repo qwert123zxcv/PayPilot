@@ -112,36 +112,7 @@ public class BillManagerTest {
     	billManager = new BillManager();
     	billManagerService=new BillManagerService();
 //
-//        // Create sample Bill objects
-//        bill1 = new Bill();
-//        bill1.setBillId(2+"");
-//        bill1.setBillName("Electricity Bill");
-//        bill1.setBillCategory("house rent");
-//        bill1.setDueDate(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 5)); // Due in 5 days
-//        bill1.setAmount(100.0f);
-//        bill1.setReminderFrequency("monthly");
-//        bill1.setAttachment(null);
-//        bill1.setNotes("Pay before end of month");
-//        bill1.setRecurring(true);
-//        bill1.setPaymentStatus("upcoming");
-//        bill1.setOverdueDays(0);
-//
-//        bill2 = new Bill();
-//        bill2.setBillId(3+"");
-//        bill2.setBillName("Internet Bill");
-//        bill2.setBillCategory("internet charges");
-//        bill2.setDueDate(new Date(System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 10)); // Overdue by 10 days
-//        bill2.setAmount(50.0f);
-//        bill2.setReminderFrequency("monthly");
-//        bill2.setAttachment(null);
-//        bill2.setNotes("Check connection issues");
-//        bill2.setRecurring(true);
-//        bill2.setPaymentStatus("pending");
-//        bill2.setOverdueDays(10);
-//
-//        // Add bills to BillManager
-//        billManager.addNewBill(bill1);
-//        billManager.addNewBill(bill2);
+
   }
     // You can now add test methods here to test the BillManager functionalities
    
@@ -170,9 +141,9 @@ public void testAddNewBill() {
 
     // Retrieve bills from the database and verify the bill was added correctly
     List<Bill> bills = billManager.getBillsOverview(null, null, null, null);
-    assertEquals(3, bills.size()); // assuming there are already 10 bills in the table
+    assertEquals(3, bills.size()); // assuming there are already 2 bills in the table
 
-    Bill savedBill = bills.get(2); // since it's zero-indexed, the new bill would be at index 10
+    Bill savedBill = bills.get(2); // since it's zero-indexed, the new bill would be at index 2
     assertEquals("Test Bill", savedBill.getBillName());
     assertEquals("house rent", savedBill.getBillCategory());
     assertEquals(100.00, savedBill.getAmount(), 0.001);
@@ -270,7 +241,7 @@ public void testGetUpcomingBills() throws ParseException {
     List<Bill> upcomingBills = billManager.getUpcomingBills();
 
     // Verify that the correct bills are returned
-    assertEquals(2, upcomingBills.size()); // Assuming there are 5 unpaid bills already in the table, plus bill1 and bill2
+    assertEquals(2, upcomingBills.size()); 
 //    assertTrue(upcomingBills.contains(bill1));
 //    assertFalse(upcomingBills.contains(bill2)); // The paid bill should not be in the list
 }
@@ -332,4 +303,4 @@ public void testMarkBillAsPending() {
          
         
         
-      } // jagades
+      } // jagadesh
