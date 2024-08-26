@@ -8,6 +8,18 @@ import java.util.concurrent.TimeUnit;
 
 import com.nwb.bill.model.Bill;
 
+/**
+ * BillInputSupport.java
+ * 
+ * Author: Harshit Bhatt
+ * Date: 24-Aug-2024
+ * 
+ * This class provides functionality to support user input for creating and managing bills in the Bill Management System. 
+ * It offers methods to prompt users for various bill details such as ID, name, category, due date, amount, reminder frequency, 
+ * attachment availability, notes, recurring status, and payment status. The class includes validation to ensure inputs are correct 
+ * and calculates overdue days based on the due date of the bill.
+ */
+
 public class BillInputSupport {
     private static Scanner s = new Scanner(System.in);
 //    private static int billId = 0;
