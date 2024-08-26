@@ -3,6 +3,15 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * Bill.java
+ * 
+ * Author: Grace Hephzibah M
+ * Date: 24-Aug-2024
+ * 
+ * This class represents the Bill class with its attributes, constructors, getters and setters. 
+ */
+
 /*
  * Bill Category: ALL, DEBT_PAYMENTS, HOUSE_RENT, GROCERIES, INTERNET_CHARGES,RETIREMENT_CHARGES, CELL_PHONE_CHARGES
  * Bill Frequency: DAILY, WEEKLY, BIWEEKLY, MONTHLY, BIMONTHLY, QUARTERLY, SEMIANNUAL, ANNUAL; 

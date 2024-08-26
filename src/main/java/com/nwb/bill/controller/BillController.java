@@ -4,11 +4,25 @@ import java.util.*;
 import com.nwb.bill.model.Bill;
 import com.nwb.bill.service.BillManagerService;
 
+/**
+ * Author:  Grace Hephzibah M
+ * Date: 24-Aug-2024
+ * BillController class is responsible for managing user interactions with the Bill Management System.
+ * It provides functionalities to add new bills, view bills overview, view overdue and upcoming bills,
+ * snooze bills, and mark bills as paid.
+ */
+
 public class BillController {
     private static Scanner s = new Scanner(System.in);
     private static BillManagerService billManagerService = new BillManagerService();
     private static BillInputSupport bis = new BillInputSupport();
 
+    /**
+     * The main method is the entry point of the Bill Management System application.
+     * It displays a menu and processes user input to perform various bill management operations.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
 
         while (true) {
@@ -53,6 +67,11 @@ public class BillController {
         }
     }
     
+    /**
+     * Executes the process of adding a new bill. 
+     * It prompts the user for bill details, confirms if they want to save the bill, 
+     * and then saves the bill if confirmed.
+     */
     private static void executeAddNewBill() 
     {
     	System.out.println("\nNew Bill Information:");
@@ -70,12 +89,21 @@ public class BillController {
         }
     }
     
+    /**
+     * Executes the process of viewing overdue bills.
+     * It retrieves and displays a list of bills that are overdue.
+     */
     private static void executeViewOverdueBills(){
         System.out.println("\nView Overdue Bills:");
         List<Bill> overdueBills = billManagerService.getOverdueBills();
         displayBills(overdueBills);
     }
     
+    /**
+     * Executes the process of viewing a summary of bills based on user-specified criteria.
+     * It prompts the user for a bill category, date range, and payment status, 
+     * and then retrieves and displays matching bills.
+     */
     private static void executeGetBillsOverview() {
     	  System.out.println("\nView Bills Overview:");
     	  String category = bis.getBillCategory();
@@ -87,13 +115,21 @@ public class BillController {
           displayBills(bills);
     }
     
-    
+    /**
+     * Executes the process of viewing upcoming bills.
+     * It retrieves and displays a list of bills that are due soon.
+     */
     private static void executeViewUpcomingBills() {
     	System.out.println("\nView Upcoming Bills:");
         List<Bill> upcomingBills = billManagerService.getUpcomingBills();
         displayBills(upcomingBills);
     }
     
+    /**
+     * Executes the process of snoozing a bill.
+     * It prompts the user for a bill ID and a new snooze date, 
+     * then updates the bill's due date if valid.
+     */
     private static void executeSnoozeBill() {
     	System.out.println("\nSnooze Bill:");
     	String billId = bis.getBillId();
@@ -110,7 +146,10 @@ public class BillController {
     	}
     }
     
-
+    /**
+     * Executes the process of marking a bill as paid.
+     * It prompts the user for a bill ID and updates the bill's status to paid if it exists.
+     */
     private static void executeMarkBillAsPaid() {
     	System.out.println("\nMark Bill As Bill:");
     	String billId = bis.getBillId();
@@ -124,6 +163,11 @@ public class BillController {
     	}
     }
     
+    /**
+     * Displays a list of bills. If no bills are found, it notifies the user.
+     *
+     * @param bills List of bills to be displayed.
+     */
     private static void displayBills(List<Bill> bills) {
         if (bills.isEmpty()) {
             System.out.println("No bills found.");

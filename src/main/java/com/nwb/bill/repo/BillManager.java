@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * BillManager.java
  * 
- * Author: Harshit Bhatt, Grace Hephzibah
+ * Author: Harshit Bhatt, Grace Hephzibah M
  * Date: 24-Aug-2024
  * 
  * This class represents the manager for handling bill-related operations in the Bill Management System.
