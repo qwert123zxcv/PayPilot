@@ -7,7 +7,15 @@ import java.util.*;
 
 import java.util.Date;
 
-
+/**
+ * BillManager.java
+ * 
+ * Author: Harshit Bhatt, Grace Hephzibah
+ * Date: 24-Aug-2024
+ * 
+ * This class represents the manager for handling bill-related operations in the Bill Management System.
+ * It provides functionalities to retrieve, add, update, and filter bills using an Oracle database.
+ */
 public class BillManager {
 	private List<Bill> bills;
 	Scanner s=new Scanner(System.in);
@@ -16,6 +24,13 @@ public class BillManager {
 		this.bills = new ArrayList<>();
 	}
 
+	/**
+	 * Method to retrieve all bills from the database. This method connects to the 
+	 * database, executes a SQL query to select all records from the "bills" table, 
+	 * and returns a list of Bill objects representing each record.
+	 *
+	 * @return A list of Bill objects representing all the bills stored in the database.
+	 */
 	public List<Bill> getBills() {
 		List<Bill> allBills =new ArrayList<>();
 		Connection conn=DBConnection.getConnection();
@@ -49,6 +64,16 @@ public class BillManager {
 		return bills;
 	}
 
+	/**
+	 * Method to add a new bill to the database. It establishes a connection to the 
+	 * Oracle database, prepares an SQL INSERT statement with the bill details, 
+	 * executes the statement, and displays a message indicating whether the 
+	 * record was successfully inserted.
+	 *
+	 * @param bill The Bill object containing details like bill ID, bill name, 
+	 *             category, due date, amount, reminder frequency, attachment, 
+	 *             notes, recurring status, payment status, and overdue days.
+  	 */
 	public void addNewBill(Bill bill) {
 		try {
 			Connection connection = DriverManager.getConnection(
@@ -83,7 +108,14 @@ public class BillManager {
 		}
 	}
 
-	//Get all overdue bills
+	/**
+	 * Method to retrieve a list of overdue bills from the database. It establishes 
+	 * a connection to the database, executes a SQL SELECT query to fetch all bills 
+	 * with overdue days greater than zero, and maps the results to a list of Bill 
+	 * objects.
+	 *
+	 * @return A list of Bill objects representing the overdue bills.
+	 */
 	public List<Bill> getOverdueBills() {
 		//Must add some code here
 		List<Bill> overdueBills=new ArrayList<>();
@@ -124,7 +156,21 @@ public class BillManager {
 		return overdueBills;
 	}
 
-
+	/**
+	 * Method to retrieve a filtered list of bills from the database based on specified 
+	 * criteria such as category, date range, and payment status. The method constructs 
+	 * a dynamic SQL query based on the provided filters.
+	 *
+	 * @param category The category of the bills to filter by. If null or "all", this 
+	 *                 filter is ignored.
+	 * @param fromDate The start date for the due date filter. Bills with a due date 
+	 *                 on or after this date will be included. If null, this filter is ignored.
+	 * @param toDate The end date for the due date filter. Bills with a due date 
+	 *               on or before this date will be included. If null, this filter is ignored.
+	 * @param status The payment status of the bills to filter by. If null or empty, 
+	 *               this filter is ignored.
+	 * @return A list of Bill objects that match the specified filters.
+	 */
 	public List<Bill> getBillsOverview(String category, Date fromDate, Date toDate, String status) {
 	    
 		List<Bill> filteredBills = new ArrayList<>();
@@ -195,6 +241,14 @@ public class BillManager {
 	    return filteredBills;
 	}
 
+	/**
+	 * Method to retrieve a list of overdue bills from the database. It establishes 
+	 * a connection to the database, executes a SQL SELECT query to fetch all bills 
+	 * with overdue days greater than zero, and maps the results to a list of Bill 
+	 * objects.
+	 *
+	 * @return A list of Bill objects representing the overdue bills.
+	 */
 	public List<Bill> getUpcomingBills() {
 		List<Bill> upcomingBills = new ArrayList<>();
 		Connection conn = DBConnection.getConnection();
@@ -231,6 +285,13 @@ public class BillManager {
 	    return upcomingBills;
 	}
 
+	/**
+	 * Method to mark a bill as paid in the database. It updates the payment status 
+	 * of the specified bill to "paid" and sets the overdue days to 0.
+	 *
+	 * @param bill The Bill object representing the bill to be marked as paid. 
+	 *             The bill's ID is used to identify the specific record to update.
+	 */
 	public void markBillAsPaid(Bill bill) {
 		String sql = "UPDATE bills SET payment_status = ?, overdue_days = ? WHERE bill_id = ?";
 	    
@@ -246,6 +307,15 @@ public class BillManager {
 	    }
 	}
 
+	/**
+	 * Method to snooze a bill by updating its due date in the database. The method 
+	 * sets the bill's due date to the specified snooze date and resets the overdue 
+	 * days to 0.
+	 *
+	 * @param bill The Bill object representing the bill to be snoozed. The bill's 
+	 *             ID is used to identify the specific record to update.
+	 * @param snoozeDate The new due date to which the bill is snoozed.
+	 */
 	public void snoozeBill(Bill bill, Date snoozeDate) {
 		String sql = "UPDATE bills SET due_date = ?, overdue_days = ? WHERE bill_id = ?";
         
