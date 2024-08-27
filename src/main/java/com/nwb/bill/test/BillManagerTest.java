@@ -248,18 +248,18 @@ public void testGetUpcomingBills() throws ParseException {
 //jatin		
       //test case for markBillAsPaid
      @Test
-public void testMarkBillAsPending() {
+public void testMarkBillAsPaid() {
     String billId = "1";  // Assuming this bill exists in the database
 
-    // Step 1: Fetch the bill from the database using the billId
+    // Fetch the bill from the database using the billId
     Bill bill = billManagerService.searchBillWithId(billId);
     assertNotNull(bill);
     assertEquals("pending", bill.getPaymentStatus()); // Ensure the initial status is "Pending"
 
-    // Step 2: Mark the bill as paid
+    // Mark the bill as paid
     billManagerService.markBillAsPaid(billId); // This method should update the payment status in the database
 
-    // Step 3: Verify the changes in the database
+    // Verify the changes in the database
     Bill updatedBill = billManagerService.searchBillWithId(billId); // Fetch the updated bill after the status change
     assertNotNull(updatedBill);
     assertEquals("paid", updatedBill.getPaymentStatus()); // Check if the payment status is updated to "Paid"
