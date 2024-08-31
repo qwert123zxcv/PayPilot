@@ -69,4 +69,16 @@ public class BillController {
 
         return billService.getBillsOverview(category, fromDate, toDate, status);
     }
+     @GetMapping("/upcoming")
+    public List<Bill> getUpcomingBills() {
+        return billService.getUpcomingBills();
+    }
+      @PutMapping("/snooze/{billId}")
+    public int snoozeBill(@PathVariable String billId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date snoozeDate) {
+        return billService.snoozeBill(billId, snoozeDate);
+    }
+     @PutMapping("/{id}/markAsPaid")
+    public boolean markBillAsPaid(@PathVariable String id) {
+        return billService.markBillAsPaid(id);
+    }
 }
