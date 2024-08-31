@@ -23,4 +23,6 @@ public interface BillRepository extends CrudRepository<Bill, Long>{
                                   @Param("fromDate") Date fromDate,
                                   @Param("toDate") Date toDate,
                                   @Param("status") String status);
+	 @Query("SELECT b FROM Bill b WHERE b.paymentStatus = 'Upcoming'")
+         List<Bill> findUpcomingBills();
 }
