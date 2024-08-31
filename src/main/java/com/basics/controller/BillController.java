@@ -74,7 +74,7 @@ public class BillController {
         return billService.getUpcomingBills();
     }
       @PutMapping("/snooze/{billId}")
-public int snoozeBill(@PathVariable String billId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date snoozeDate) {
+public String snoozeBill(@PathVariable String billId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date snoozeDate) {
     return billService.snoozeBill(billId, snoozeDate);
 }
 @PutMapping("/{id}/markAsPaid")
