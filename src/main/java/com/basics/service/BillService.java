@@ -73,19 +73,19 @@ public class BillService {
 	 public List<Bill> getUpcomingBills() {
         return billRepository.findUpcomingBills();
     }
-	 public int snoozeBill(String billId, Date snoozeDate) {
-        int returnValue = 3; // Default: bill not found
+	 public String snoozeBill(String billId, Date snoozeDate) {
+        int returnValue "bill not found"; // Default: bill not found
         
         Date currentDate = new Date();
         if (snoozeDate.before(currentDate)) {
-            returnValue = 2; // Snooze date is less than current date
+            returnValue = "Snooze date is less than current date"; // Snooze date is less than current date
         } else {
             Optional<Bill> optionalBill = billRepository.findById(Long.parseLong(billId));
             if (optionalBill.isPresent()) {
                 Bill searchBill = optionalBill.get();
                 searchBill.setDueDate(snoozeDate); // Update the due date to the snooze date
                 billRepository.save(searchBill); // Save the updated bill
-                returnValue = 1; // Bill found and snoozed
+                returnValue = "Bill found and snoozed"; // Bill found and snoozed
             }
         }
         
