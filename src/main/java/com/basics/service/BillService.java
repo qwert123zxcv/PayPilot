@@ -92,13 +92,13 @@ public class BillService {
         return returnValue;
     }
 	public boolean markBillAsPaid(String billId) {
-        Optional<Bill> optionalBill = billRepository.findById(billId);
-        if (optionalBill.isPresent()) {
-            Bill bill = optionalBill.get();
-            bill.setPaymentStatus("Paid");
-            billRepository.save(bill);
-            return true;
-        }
-        return false;
+    Optional<Bill> optionalBill = billRepository.findById(Long.parseLong(billId));
+    if (optionalBill.isPresent()) {
+        Bill bill = optionalBill.get();
+        bill.setPaymentStatus("Paid");
+        billRepository.save(bill);
+        return true;
     }
+    return false;
+}
 }
