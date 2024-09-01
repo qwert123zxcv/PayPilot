@@ -74,7 +74,7 @@ public class BillService {
         return billRepository.findUpcomingBills();
     }
 	 public String snoozeBill(String billId, Date snoozeDate) {
-        int returnValue "bill not found"; // Default: bill not found
+        String returnValue = "bill not found"; // Default: bill not found
         
         Date currentDate = new Date();
         if (snoozeDate.before(currentDate)) {
