@@ -1,12 +1,18 @@
+/*
+ * Author: Hemalata L Chavan
+ * Date: 03-Sept-2024
+ * Description: The Bill class represents the details of a bill in the Bill Management System. It includes attributes
+ * such as bill name, category, due date, amount, reminder frequency, and payment status. This class also defines
+ * operations for adding, updating, and deleting bills.
+ */
 
 /*
- * Bill Category: ALL, DEBT_PAYMENTS, HOUSE_RENT, GROCERIES, INTERNET_CHARGES,RETIREMENT_CHARGES, CELL_PHONE_CHARGES
+ * Bill Category: ALL, DEBT_PAYMENTS, HOUSE_RENT, GROCERIES, INTERNET_CHARGES, RETIREMENT_CHARGES, CELL_PHONE_CHARGES
  * Bill Frequency: DAILY, WEEKLY, BIWEEKLY, MONTHLY, BIMONTHLY, QUARTERLY, SEMIANNUAL, ANNUAL; 
  * Bill Status: UPCOMING, PENDING, PAID
  */
 
 package com.basics.model;
-
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,22 +32,23 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Primary key, auto-generated
 
-    private String billName;
-    private String billCategory;
+    private String billName; // Name of the bill
+    private String billCategory; // Category of the bill
 
     @Temporal(TemporalType.DATE)
-    private Date dueDate;
+    private Date dueDate; // Due date for the bill payment
 
-    private Float amount;
-    private String reminderFrequency;
-    private String attachment;
-    private String notes;
-    private boolean isRecurring;
-    private String paymentStatus;
-    private int overdueDays;
+    private Float amount; // Amount to be paid
+    private String reminderFrequency; // Frequency of reminders
+    private String attachment; // Any attachments related to the bill
+    private String notes; // Additional notes about the bill
+    private boolean isRecurring; // Indicates if the bill is recurring
+    private String paymentStatus; // Status of the bill payment (UPCOMING, PENDING, PAID)
+    private int overdueDays; // Number of days the payment is overdue
 
     // Constructors
     public Bill() {
+        // Default constructor
     }
 
     // Getters and Setters
@@ -146,20 +153,17 @@ public class Bill {
                "Overdue Days: " + overdueDays + "\n" +
                "-------------";
     }
- // Additional Functions according to class diagram 
+
+    // Additional Functions according to class diagram 
     public void addBill() {
-    	
+        
     }
     
     public void updateBill() {
-    	
+        
     }
     
     public void deleteBill() {
-    	
+        
     }
 }
-
-    
-    
-    
