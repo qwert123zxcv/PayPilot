@@ -177,7 +177,33 @@ public class Sprint3ApplicationTests {
     }
   
 
+    
+    @Test
+    public void testUpcomingBills() {
+    	List<Bill> bills = billService.getUpcomingBills();
 
+        // Verify the number of bills returned
+        assertThat(bills.size()).isEqualTo(1);
+    }
+    
+    @Test
+    public void testSnoozeBill_Success() throws ParseException {
+        String billId = "1";
+        Date snoozeDate = dateFormat.parse("01-10-2024");
+        String result = "Bill found and snoozed";
+
+        // Test the snoozeBill() method
+        String response = billService.snoozeBill(billId, snoozeDate);
+        assertEquals(result, response);
+    }
    
     
+    @Test
+    public void testMarkBillAsPaid_Success() {
+        Long billId = 1L;
+
+        // Test the markBillAsPaid() method
+        boolean response = billService.markBillAsPaid(billId.toString());
+        assertTrue(response);
+    }
 }
