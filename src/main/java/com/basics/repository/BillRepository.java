@@ -16,6 +16,8 @@ import com.basics.model.Bill;
  * for managing Bill entities in the database.
  */
 public interface BillRepository extends CrudRepository<Bill, Long> {
+	
+	 Bill findByBillName(String billName);
     
     // Custom query to get overdue bills
     @Query("SELECT b FROM Bill b WHERE b.overdueDays > 0")

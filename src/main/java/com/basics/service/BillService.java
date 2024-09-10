@@ -39,6 +39,12 @@ public class BillService {
         Optional<Bill> optionalBill = billRepository.findById(id);
         return optionalBill.orElse(null); // Return the bill if found, else return null
     }
+	
+	public Bill findByBillName(String billName) {
+		return billRepository.findByBillName(billName);
+	    }
+	
+
 
     // Delete all bills
     public void deleteAllBills() {

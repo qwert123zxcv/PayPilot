@@ -44,6 +44,12 @@ public class BillController {
         return billService.getBillById(id); // Fetch a bill by its ID
     }
     
+    @GetMapping("/search")
+    public Bill getBillByName(@RequestParam String billName) {
+        return billService.findByBillName(billName); // Fetch a bill by its name
+    }
+
+    
     @PostMapping
     public void addNewBill(@RequestBody Bill bill) {
         billService.addNewBill(bill); // Add a new bill
