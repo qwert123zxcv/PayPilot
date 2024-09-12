@@ -17,11 +17,11 @@ public class ReminderSettingService {
         return reminderSettingRepository.save(reminderSetting);
     }
 
-    public Optional<ReminderSetting> getReminderSetting(Long id) {
-        return reminderSettingRepository.findById(id);
+    public Optional<ReminderSetting> getReminderSetting(String reminderId) {
+        return reminderSettingRepository.findById(reminderId);
     }
 
-    public void deleteReminderSetting(Long id) {
-        reminderSettingRepository.deleteById(id);
+    public void deleteReminderSetting(String reminderId) {
+    	reminderSettingRepository.deleteById(reminderId);
     }
 }

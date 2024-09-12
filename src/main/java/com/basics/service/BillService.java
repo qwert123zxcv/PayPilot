@@ -20,45 +20,44 @@ import com.basics.repository.BillRepository;
 
 @Service
 public class BillService {
-	
-	@Autowired
+
+    @Autowired
     private BillRepository billRepository; // Injecting the BillRepository to interact with the database
-	
-	// Get all bills
-	public Iterable<Bill> getAllBills() {
+
+    // Get all bills
+    public Iterable<Bill> getAllBills() {
         return billRepository.findAll();
     }
-	
-	// Add a new bill
-	public void addNewBill(Bill bill) {
+
+    // Add a new bill
+    public void addNewBill(Bill bill) {
         billRepository.save(bill);
     }
-	 
-	// Get a bill by ID
-	public Bill getBillById(Long id) {
-        Optional<Bill> optionalBill = billRepository.findById(id);
+
+    // Get a bill by billId
+    public Bill getBillById(String billId) {
+        Optional<Bill> optionalBill = billRepository.findById(billId);
         return optionalBill.orElse(null); // Return the bill if found, else return null
     }
-	
-	public Bill findByBillName(String billName) {
-		return billRepository.findByBillName(billName);
-	    }
-	
 
+    // Get a bill by name
+    public Bill findByBillName(String billName) {
+        return billRepository.findByBillName(billName);
+    }
 
     // Delete all bills
     public void deleteAllBills() {
         billRepository.deleteAll();
     }
 
-    // Delete a bill by ID
-    public void deleteBillById(Long id) {
-        billRepository.deleteById(id);
+    // Delete a bill by billId
+    public void deleteBillById(String billId) {
+        billRepository.deleteById(billId);
     }
 
     // Update an existing bill
-    public Bill updateBill(Long id, Bill updatedBill) {
-        Optional<Bill> optionalBill = billRepository.findById(id);
+    public Bill updateBill(String billId, Bill updatedBill) {
+        Optional<Bill> optionalBill = billRepository.findById(billId);
         if (optionalBill.isPresent()) {
             Bill existingBill = optionalBill.get();
             // Update the fields of the existing bill with the new values
@@ -77,17 +76,17 @@ public class BillService {
             return null; // If the bill doesn't exist, return null
         }
     }
-	    
+
     // Get overdue bills
     public List<Bill> getOverdueBills() {
         return billRepository.findOverdueBills(); // Fetch overdue bills using JPA repository
     }
-	    
+
     // Get a list of bills overview based on filters
     public List<Bill> getBillsOverview(String category, Date fromDate, Date toDate, String status) {
         return billRepository.findBillsOverview(category, fromDate, toDate, status);
     }
-	
+
     // Get upcoming bills
     public List<Bill> getUpcomingBills() {
         return billRepository.findUpcomingBills();
@@ -96,12 +95,12 @@ public class BillService {
     // Snooze a bill by setting a new due date
     public String snoozeBill(String billId, Date snoozeDate) {
         String returnValue = "Bill not found"; // Default message if the bill is not found
-        
+
         Date currentDate = new Date();
         if (snoozeDate.before(currentDate)) {
             returnValue = "Snooze date is earlier than the current date"; // Invalid snooze date
         } else {
-            Optional<Bill> optionalBill = billRepository.findById(Long.parseLong(billId));
+            Optional<Bill> optionalBill = billRepository.findById(billId);
             if (optionalBill.isPresent()) {
                 Bill searchBill = optionalBill.get();
                 searchBill.setDueDate(snoozeDate); // Update the due date to the snooze date
@@ -109,13 +108,13 @@ public class BillService {
                 returnValue = "Bill found and snoozed"; // Success message
             }
         }
-        
+
         return returnValue;
     }
 
     // Mark a bill as paid
     public boolean markBillAsPaid(String billId) {
-        Optional<Bill> optionalBill = billRepository.findById(Long.parseLong(billId));
+        Optional<Bill> optionalBill = billRepository.findById(billId);
         if (optionalBill.isPresent()) {
             Bill bill = optionalBill.get();
             bill.setPaymentStatus("Paid");

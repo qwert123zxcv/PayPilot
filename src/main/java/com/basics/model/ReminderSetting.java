@@ -1,30 +1,45 @@
 package com.basics.model;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
 
 @Entity
 @Table(name = "reminder_settings")
 public class ReminderSetting {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	 @Id
+	    @Column(name = "reminder_id") 
+	    private String reminderId;
 
-    private String reminderFrequency;
-    private Date startingDate;
-    private String customMessage;
-    private String notificationPreference;
-    private Boolean isRecurring;
+	    @Column(name = "reminder_frequency")
+	    private String reminderFrequency;
+
+	    @Column(name = "starting_date")
+	    @Temporal(TemporalType.DATE)
+	    private Date startingDate;
+
+	    @Column(name = "custom_message")
+	    private String customMessage;
+
+	    @Column(name = "notification_preference")
+	    private String notificationPreference;
+
+	    @Column(name = "is_recurring")
+	    private Boolean isRecurring;
+
+
+    // Define many-to-one relationship with Bill
+    @ManyToOne
+    @JoinColumn(name = "bill_id")  // Define foreign key relation
+    private Bill bill;  // This creates the foreign key relationship with the Bill entity
 
     // Getters and Setters
-    public Long getId() {
-        return id;
+    public String getId() {
+        return reminderId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(String reminderId) {
+        this.reminderId = reminderId;
     }
 
     public String getReminderFrequency() {
@@ -65,5 +80,14 @@ public class ReminderSetting {
 
     public void setIsRecurring(Boolean isRecurring) {
         this.isRecurring = isRecurring;
+    }
+
+    // Getter and Setter for Bill
+    public Bill getBill() {
+        return bill;
+    }
+
+    public void setBill(Bill bill) {
+        this.bill = bill;
     }
 }

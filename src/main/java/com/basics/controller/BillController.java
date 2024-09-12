@@ -45,14 +45,19 @@ public class BillController {
         return billService.getAllBills(); // Fetch all bills
     }
 
-    @GetMapping("/{id}")
-    public Bill getBillById(@PathVariable Long id) {
-        return billService.getBillById(id); // Fetch a bill by its ID
+    @GetMapping("/{billId}")
+    public Bill getBillById(@PathVariable String billId) {
+        return billService.getBillById(billId); // Fetch a bill by its ID
     }
 
     @GetMapping("/search")
     public Bill getBillByName(@RequestParam String billName) {
         return billService.findByBillName(billName); // Fetch a bill by its name
+    }
+    
+    @PostMapping("/add")
+    public void addNewBill(@RequestBody Bill bill) {
+        billService.addNewBill(bill); 
     }
 
     @PostMapping
@@ -95,14 +100,14 @@ public class BillController {
         billService.addNewBill(bill); // Add a new bill
     }
 
-    @PutMapping("/{id}")
-    public Bill updateBill(@PathVariable Long id, @RequestBody Bill bill) {
-        return billService.updateBill(id, bill); // Update an existing bill by its ID
+    @PutMapping("/{billId}")
+    public Bill updateBill(@PathVariable String billId, @RequestBody Bill bill) {
+        return billService.updateBill(billId, bill); // Update an existing bill by its ID
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteBillById(@PathVariable Long id) {
-        billService.deleteBillById(id); // Delete a bill by its ID
+    @DeleteMapping("/{billId}")
+    public void deleteBillById(@PathVariable String billId) {
+        billService.deleteBillById(billId); // Delete a bill by its ID
     }
 
     @DeleteMapping("/deleteAll")
@@ -135,9 +140,9 @@ public class BillController {
         return billService.snoozeBill(billId, snoozeDate); // Snooze a bill to a new date
     }
 
-    @PutMapping("/{id}/markAsPaid")
-    public boolean markBillAsPaid(@PathVariable Long id) {
-        return billService.markBillAsPaid(id.toString()); // Mark a bill as paid
+    @PutMapping("/{billId}/markAsPaid")
+    public boolean markBillAsPaid(@PathVariable String billId) {
+        return billService.markBillAsPaid(billId); // Mark a bill as paid
     }
 
     private String calculatePaymentStatus(Date dueDate) {

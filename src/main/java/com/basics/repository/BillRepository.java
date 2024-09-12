@@ -15,7 +15,7 @@ import com.basics.model.Bill;
  * BillRepository interface extends CrudRepository to provide custom query methods
  * for managing Bill entities in the database.
  */
-public interface BillRepository extends CrudRepository<Bill, Long> {
+public interface BillRepository extends CrudRepository<Bill, String> {
 	
 	 Bill findByBillName(String billName);
     

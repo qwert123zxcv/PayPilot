@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import com.basics.model.ReminderSetting;
 
 @Repository
-public interface ReminderSettingRepository extends JpaRepository<ReminderSetting, Long> {
+public interface ReminderSettingRepository extends JpaRepository<ReminderSetting, String> {
 }

@@ -20,4 +20,20 @@
 //http://localhost:8080/bills/snooze/26?snoozeDate=2024-08-01
 
 
+//{
+//    "billName": "Water Bill",
+//    "billCategory": "HOUSE_RENT",
+//    "dueDate": "2024-09-30",
+//    "amount": 150.75,
+//    "reminderFrequency": "MONTHLY",
+//    "notes": "Monthly electricity bill for September",
+//    "isRecurring": true,
+//    "attachment": "path/to/attachment/file.pdf",
+//    "paymentStatus": "UPCOMING",
+//    "user": {
+//        "userId": "user123" 
+//    }
+//}
+
+
 

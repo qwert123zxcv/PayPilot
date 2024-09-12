@@ -20,13 +20,13 @@ public class ReminderSettingController {
         return reminderSettingService.saveReminderSetting(reminderSetting);
     }
 
-    @GetMapping("/{id}")
-    public Optional<ReminderSetting> getReminderSettingById(@PathVariable Long id) {
-        return reminderSettingService.getReminderSetting(id);
+    @GetMapping("/{reminderId}")
+    public Optional<ReminderSetting> getReminderSettingById(@PathVariable String reminderId) {
+        return reminderSettingService.getReminderSetting(reminderId);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteReminderSetting(@PathVariable Long id) {
-        reminderSettingService.deleteReminderSetting(id);
+    @DeleteMapping("/{reminderId}")
+    public void deleteReminderSetting(@PathVariable String reminderId) {
+        reminderSettingService.deleteReminderSetting(reminderId);
     }
 }
