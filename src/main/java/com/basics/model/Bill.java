@@ -66,7 +66,7 @@ public class Bill {
 	 @Column(name = "is_recurring")
 	 private Boolean isRecurring = false;// Indicates if the bill is recurring
    
-	 @Column(name = "payment_status", nullable = false)
+	 @Column(name = "payment_status")
 	 private String paymentStatus; // Status of the bill payment (UPCOMING, PENDING, PAID)
     
 	 @Column(name = "overdue_days", nullable = false)

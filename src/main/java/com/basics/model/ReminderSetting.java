@@ -2,6 +2,7 @@ package com.basics.model;
 
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "reminder_settings")
@@ -9,7 +10,7 @@ public class ReminderSetting {
 
 	 @Id
 	    @Column(name = "reminder_id") 
-	    private String reminderId;
+	    private String reminderId=UUID.randomUUID().toString();
 
 	    @Column(name = "reminder_frequency")
 	    private String reminderFrequency;
